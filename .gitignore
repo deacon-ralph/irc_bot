@@ -1,0 +1,28 @@
+# dev env stuff
+.idea/
+.vscode/
+.vagrant/
+*.log
+
+# OSX
+**/.DS_Store
+
+# packaging/other things
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+.cache
+
+# virtualenv
+.venv
+venv/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
