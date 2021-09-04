@@ -11,7 +11,8 @@ Channel = common.ChannelModel
 
 if __name__ == '__main__':
     brain = bots.FamilyFriendlyChatBot(
-        [Channel('#chan')]
+        'thing1',  username='thing1',
+        realname='thing1', fallback_nicknames=['thing2']
     )
-    brain.run('server')
+    brain.run('serv', tls=True, tls_verify=False)
 

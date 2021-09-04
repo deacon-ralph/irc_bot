@@ -3,17 +3,13 @@ import dataclasses
 
 import pydle
 
+import common
+
+channels = [common.ChannelModel('#channel')]
 
 class FamilyFriendlyChatBot(pydle.Client):
     """chat bot with command processing and all the standard IRC things"""
 
-    def __init__(self, channels):
-        """Initialize bot
-
-        :param list[_ChannelModel] channels: channel list to join on connect
-        """
-        self._channels = channels
-
     async def on_connect(self):
-        for chan in self._channels:
+        for chan in channels:
             await self.join(chan.name, chan.passwd)
