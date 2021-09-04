@@ -1,0 +1,33 @@
+nick = "mybot"
+username = "botusername"
+realname = "botrealname"
+fallback_nicknames = [ "mybot1", "mybot2" ]
+
+[[servers]]
+[servers.nooscope]
+nick = "mybot"
+username = "botusername"
+realname = "botrealname"
+fallback_nicknames = [ "mybot1", "mybot2" ]
+uri = "irc.server1.org"
+port = 6697
+use_tls = true
+tls_verify = false
+
+  [[servers.nooscope.channels]]
+  name = "#chanone"
+
+  [[servers.nooscope.channels]]
+  name = "#chantwo"
+
+[servers.server2]
+uri = "irc.server2.net"
+port = 6697
+use_tls = true
+tls_verify = false
+
+  [[servers.server2.channels]]
+  name = "#other"
+
+  [[servers.server2.channels]]
+  name = "#chatchannel"
