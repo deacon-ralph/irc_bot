@@ -18,5 +18,3 @@ class FamilyFriendlyChatBot(pydle.Client):
         :param str message: the message
         """
         print(target, by, message)
-
-
