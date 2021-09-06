@@ -19,7 +19,8 @@ class Plugin(plugin_api.LocalPlugin):
     def help_msg(self):
         return "displays youtube uri title"
 
-    async def _parse_youtube(self, link):
+    @classmethod
+    async def _parse_youtube(cls, link):
         """Parses youtube data from link
 
         :param str link: the url
@@ -51,7 +52,7 @@ class Plugin(plugin_api.LocalPlugin):
                     "(?P<url>https?://[^\s]+)",
                     message
                 ).group("url")
-                if 'youtube' in url or 'youtu.be':
+                if 'youtube' in url or 'youtu.be' in url:
                     title, duration = await self._parse_youtube(url)
                     play_btn = colors.colorize(' ▶ ', fg=colors.SILVER, bg=colors.RED)
                     title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
