@@ -32,7 +32,7 @@ class Plugin(plugin_api.LocalPlugin):
             response = await session.get(link)
             html = await response.text()
 
-        soup = bs4.BeautifulSoup(html)
+        soup = bs4.BeautifulSoup(html, features='lxml')
         title = None
         duration = None
         for tag in soup.find_all("meta"):
@@ -46,6 +46,9 @@ class Plugin(plugin_api.LocalPlugin):
         return title, duration
 
     async def on_message(self, target, by, message):
+        await super().on_message(target, by, message)
+        if not self.enabled:
+            return
         if 'youtube' in message or 'youtu.be' in message:
             try:
                 url = re.search(
@@ -61,6 +64,8 @@ class Plugin(plugin_api.LocalPlugin):
                         target,
                         f'{play_btn} {title} {duration}'
                     )
+            except AttributeError:
+                pass
             except Exception:
                 _logger.error('Failed to parse youtube link')
 

@@ -12,6 +12,31 @@ import toml
 _logger = logger.LOGGER
 
 
+def _get_enabled_py_conf():
+    """Returns enabled conf as dict
+
+    :rtype: dict
+    """
+    proj_folder = pathlib.Path(__file__).parent.resolve()
+    py_modules = proj_folder.joinpath('bot_modules', 'py')
+    enabled_conf = toml.load(f'{py_modules}{os.path.sep}enabled.toml')
+    return enabled_conf
+
+
+def update_enabled_py_conf(name, enabled):
+    """Updates enabled conf and writes to disk
+
+    :param str name: name of the plugin
+    :param bool enabled: is enabled?
+    """
+    proj_folder = pathlib.Path(__file__).parent.resolve()
+    py_modules = proj_folder.joinpath('bot_modules', 'py')
+    enabled_conf = toml.load(f'{py_modules}{os.path.sep}enabled.toml')
+    enabled_conf[name] = enabled
+    with open(f'{py_modules}{os.path.sep}enabled.toml', 'w+') as f:
+        toml.dump(enabled_conf, f)
+
+
 def _get_plugin_names():
     """Returns list of module names
 
@@ -27,7 +52,7 @@ def _get_plugin_names():
     return [p.split('/irc_bot/bot_modules/py/')[1].replace('.py', '') for p in plugins]
 
 
-def load_py_plugins():
+def load_py_plugins(reload=False):
     """Returns dict of initialized plugin objects
 
     :returns: dict of plugins as {key: instance}
@@ -36,29 +61,15 @@ def load_py_plugins():
 
     instances = {}
     plugins = _get_plugin_names()
+    enabled_conf = _get_enabled_py_conf()
     for plugin in plugins:
         module = importlib.import_module(f'bot_modules.py.{plugin}')
+        if reload:
+            importlib.reload(module)
         klass = getattr(module, 'Plugin')
         instance = klass()
         instance._name = plugin
-        instances[instance.name] = instance
-    return instances
-
-
-def reload_py_plugins():
-    """Reloads plugin by name, or all of em
-
-    :returns: dict of plugins as {key: instance}
-    :rtype: dict
-    """
-    instances = {}
-    plugins = _get_plugin_names()
-    for plugin in plugins:
-        module = importlib.import_module(f'bot_modules.py.{plugin}')
-        importlib.reload(module)
-        klass = getattr(module, 'Plugin')
-        instance = klass()
-        instance._name = plugin
+        instance._enabled = enabled_conf.get(plugin, False)
         instances[instance.name] = instance
     return instances
 

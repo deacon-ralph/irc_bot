@@ -6,6 +6,11 @@ import plugin_api
 class Plugin(plugin_api.LocalPlugin):
     """Help plugin"""
 
+    @property
+    def enabled(self):
+        """ALWAYS ENABLED!"""
+        return True
+
     def help_msg(self):
         return {
             'usage': '.help <module> <detail>',

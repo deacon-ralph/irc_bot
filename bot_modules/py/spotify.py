@@ -26,11 +26,14 @@ class Plugin(plugin_api.LocalPlugin):
         """
         html = requests.get(link).text
 
-        soup = bs4.BeautifulSoup(html)
+        soup = bs4.BeautifulSoup(html, features='lxml')
         title = soup.find('title')
         return title.string.replace(' | Spotify', '')
 
     async def on_message(self, target, by, message):
+        await super().on_message(target, by, message)
+        if not self.enabled:
+            return
         if 'spotify' in message:
             try:
                 url = re.search(
@@ -45,6 +48,8 @@ class Plugin(plugin_api.LocalPlugin):
                         target,
                         f'{song_btn} {title}'
                     )
+            except AttributeError:
+                pass
             except Exception:
                 _logger.error('Failed to parse spotify link')
 

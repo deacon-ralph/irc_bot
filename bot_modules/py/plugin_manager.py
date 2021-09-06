@@ -7,6 +7,11 @@ import plugin_api
 class Plugin(plugin_api.LocalPlugin):
     """Plugin to show loaded plugins"""
 
+    @property
+    def enabled(self):
+        """ALWAYS ENABLED!"""
+        return True
+
     async def on_message(self, target, by, message):
         if message == '.plugins':
             await self.client.message(
@@ -14,7 +19,7 @@ class Plugin(plugin_api.LocalPlugin):
                 ','.join(list(self.client.plugins.keys()))
             )
         if message == '.plugins reload':
-            self.client.plugins = common.reload_py_plugins()
+            self.client.plugins = common.load_py_plugins(reload=True)
             for _, plugin in self.client.plugins.items():
                 plugin.on_loaded(self.client)
             await self.client.message(
