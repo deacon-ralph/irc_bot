@@ -128,6 +128,13 @@ class LocalPlugin(_Plugin):
                 f'🔌 {self.name} '
                 f'{colors.colorize("D I S A B L E D", fg=colors.RED)}'
             )
+        elif message == f'.{self.name} reload':
+            common.load_py_plugins(self.name, True)
+            await self.client.message(
+                target,
+                f'🔌 {self.name} {colors.BOLD}R E L O A D E D{colors.BOLD}'
+            )
+
 
 
 class RemotePlugin:

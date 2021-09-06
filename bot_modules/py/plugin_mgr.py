@@ -13,7 +13,7 @@ class Plugin(plugin_api.LocalPlugin):
         return True
 
     async def on_message(self, target, by, message):
-        if message == '.plugins':
+        if message == '.plugins list':
             await self.client.message(
                 target,
                 ','.join(list(self.client.plugins.keys()))
@@ -29,7 +29,7 @@ class Plugin(plugin_api.LocalPlugin):
 
     def help_msg(self):
         return {
-            'show': 'use ".plugins" to show loaded plugins',
+            'list': 'use ".plugins list" to list loaded plugins',
             'reload': 'use ".plugins reload" to reload all plugins'
         }
 

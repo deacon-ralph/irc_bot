@@ -11,6 +11,22 @@ class FamilyFriendlyChatBot(pydle.Client):
     """chat bot with command processing and all the standard IRC things"""
 
     plugins = None
+    _chatnet = None
+    _channels = None
+
+    @property
+    def chatnet(self):
+        """Returns the chatnet"""
+        return self._chatnet
+
+    @property
+    def channels(self):
+        """Returns list of ChannelModels
+
+        :returns: list of ChannelModel instances
+        :rtype: list of common.ChannelModel
+        """
+        return self._channels
 
     async def on_connect(self):
         """Called on connection to server
