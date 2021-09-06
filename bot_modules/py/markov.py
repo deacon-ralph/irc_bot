@@ -1,4 +1,5 @@
 """simple markov chaining for shitposting"""
+import asyncio
 import random
 
 import plugin_api
@@ -7,9 +8,20 @@ import plugin_api
 EOS = ['.', '?', '!']
 
 
-class MarkovPlugin(plugin_api.LocalPlugin):
+class Plugin(plugin_api.LocalPlugin):
+    """Markov plugin"""
 
-    def entry_point(self, client):
+    def help_msg(self):
+        return "markov shitposting"
+
+    async def on_message(self, target, by, message):
+        if 1 == 2:
+            sentence = await asyncio.ensure_future(
+                self.exec_proc(self._shitpost())
+            )
+            await self.client.message(target, sentence)
+
+    def _shitpost(self):
         with open("chatter.log", "r") as log:
             text = log.read()
         words = text.split()
