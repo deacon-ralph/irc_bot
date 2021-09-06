@@ -1,4 +1,5 @@
 """Shows plugins that are loaded"""
+import colors
 import common
 import plugin_api
 
@@ -18,7 +19,7 @@ class Plugin(plugin_api.LocalPlugin):
                 plugin.on_loaded(self.client)
             await self.client.message(
                 target,
-                'reloaded all plugins'
+                f'🔌 {colors.BOLD}R E L O A D E D{colors.BOLD} 🔌'
             )
 
     def help_msg(self):
