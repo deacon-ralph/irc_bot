@@ -45,18 +45,22 @@ class Plugin(plugin_api.LocalPlugin):
         return title, duration
 
     async def on_message(self, target, by, message):
-        try:
-            url = re.search("(?P<url>https?://[^\s]+)", message).group("url")
-            if 'youtube' in url or 'youtu.be':
-                title, duration = await self._parse_youtube(url)
-                play_btn = colors.colorize(' ▶ ', fg=colors.SILVER, bg=colors.RED)
-                title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
-                duration = colors.colorize(f'[{duration}]', fg=colors.BLACK, bg=colors.SILVER)
-                await self.client.message(
-                    target,
-                    f'{play_btn} {title} {duration}'
-                )
-        except Exception:
-            _logger.error('Failed to parse youtube link')
+        if 'youtube' in message or 'youtu.be' in message:
+            try:
+                url = re.search(
+                    "(?P<url>https?://[^\s]+)",
+                    message
+                ).group("url")
+                if 'youtube' in url or 'youtu.be':
+                    title, duration = await self._parse_youtube(url)
+                    play_btn = colors.colorize(' ▶ ', fg=colors.SILVER, bg=colors.RED)
+                    title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
+                    duration = colors.colorize(f'[{duration}]', fg=colors.BLACK, bg=colors.SILVER)
+                    await self.client.message(
+                        target,
+                        f'{play_btn} {title} {duration}'
+                    )
+            except Exception:
+                _logger.error('Failed to parse youtube link')
 
 
