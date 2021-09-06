@@ -2,10 +2,44 @@
 import asyncio
 import random
 
+import colors
 import plugin_api
 
 # End of Sentence for Markov chaining
 EOS = ('.', '?', '!')
+
+
+def _should_log(msg):
+    """Returns bool to log or not
+
+    will return False if:
+        - msg starts with a . (period)
+        - has color control char (0x03) in it
+
+    :param str msg: message
+
+    :returns: bool value weather to log or not
+    :rtype: bool
+    """
+    if msg.startswith('.'):
+        return False
+    if colors.CONTROL_COLOR in msg:
+        return False
+
+    return True
+
+
+def _maybe_log(msg):
+    """Maybe write message to disk. see _should_log method
+
+    :param str msg: the message
+    """
+    if not _should_log(msg):
+        return
+    if not msg.endswith(EOS):
+        msg += '.'
+    with open('/irc_bot/chatter.log', 'a') as f:
+        f.write(f'\n{msg}')
 
 
 def _shitpost():
@@ -72,19 +106,11 @@ class Plugin(plugin_api.LocalPlugin):
     def help_msg(self):
         return ".markov to generate random sentence"
 
-    def _maybe_log(self, msg):
-        if msg.startswith('.'):
-            return
-        if not msg.endswith(EOS):
-            msg += '.'
-        with open('/irc_bot/chatter.log', 'a') as f:
-            f.write(f'\n{msg}')
-
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
         if not self.enabled:
             return
-        self._maybe_log(message)
+        await self.exec_thread(_maybe_log, message)
         if message == '.markov':
             sentence = await asyncio.ensure_future(
                 self.exec_proc(_shitpost)
