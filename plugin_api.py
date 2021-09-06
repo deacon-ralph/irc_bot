@@ -74,7 +74,8 @@ class _Plugin(abc.ABC):
         """
         return self._enabled
 
-    async def exec_proc(self, target, *args):
+    @classmethod
+    async def exec_proc(cls, target, *args):
         """Executes in process
 
         :param func target: blocking function
@@ -85,7 +86,8 @@ class _Plugin(abc.ABC):
         loop = pydle.client.get_event_loop()
         return await loop.run_in_executor(_PROC_EXECUTOR, target, *args)
 
-    async def exec_thread(self, target, *args):
+    @classmethod
+    async def exec_thread(cls, target, *args):
         """Executes in a thread
 
         :param func target: blocking function
@@ -99,6 +101,14 @@ class _Plugin(abc.ABC):
 
 class LocalPlugin(_Plugin):
     """Local plugin, to be run and loaded where bot is running at"""
+
+    @abc.abstractmethod
+    def help_msg(self):
+        """Returns dict containing help info
+
+        :returns: dict of help options or str as description
+        :rtype: dict|str
+        """
 
     async def on_message(self, target, by, message):
         """called on message from user or channel"""
