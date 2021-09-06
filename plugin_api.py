@@ -1,23 +1,94 @@
 """Plugin api for python"""
 import abc
+import concurrent.futures as concurrent_futures
+
+import pydle
+
+
+_PROC_EXECUTOR = concurrent_futures.ProcessPoolExecutor()
+_THREAD_EXECUTOR = concurrent_futures.ThreadPoolExecutor()
 
 
 class _Plugin(abc.ABC):
     """Abstract base plugin defining api contract"""
 
-    async def on_message(self, target, by, message):
-        """called on message from user or channel"""
-
-
-class LocalPlugin:
-    """Local plugin, to be run and loaded where bot is running at"""
-
     client = None
+    _name = None
+
+    def on_loaded(self, client):
+        """Called when bot is connected. will set client here to handle IRC
+
+        :param pydle.Client client: irc client impl
+        """
+        self.client = client
+
+    def showhelp(self, key=None):
+        """Shows help menu for given module
+
+        :param str|None key: key corresponding to value in mapping
+
+        :returns: string of available help or value for specific key
+        :rtype: str
+        """
+        if not key:
+            if isinstance(self.help_msg(), dict):
+                return f'try one of .help {self.name} ' \
+                    f'{",".join(list(self.help_msg().keys()))}'
+            else:
+                return self.help_msg()
+        else:
+            if isinstance(self.help_msg(), str):
+                return self.help_msg()
+            else:
+                return self.help_msg()[key] if key in self.help_msg() \
+                    else f'no help available for {key}'
 
     @abc.abstractmethod
-    def entry_point(self, client):
-        """Entry point for plugin. do any required initialization here"""
-        self.client = client
+    def help_msg(self):
+        """Returns dict containing help info
+
+        :returns: dict of help options or str as description
+        :rtype: dict|str
+        """
+
+    @property
+    def name(self):
+        """Returns name of the plugin
+
+        :returns: name of the plugin as a string
+        :rtype: str
+        """
+        return self._name
+
+    async def exec_proc(self, target, *args):
+        """Executes in process
+
+        :param func target: blocking function
+        :param args: args to pass
+
+        :returns: value from target function
+        """
+        loop = pydle.client.get_event_loop()
+        return await loop.run_in_executor(_PROC_EXECUTOR, target, args)
+
+    async def exec_thread(self, target, *args):
+        """Executes in a thread
+
+        :param func target: blocking function
+        :param args: args to pass
+
+        :returns: value from target function
+        """
+        loop = pydle.client.get_event_loop()
+        return await loop.run_in_executor(_PROC_EXECUTOR, target, args)
+
+
+class LocalPlugin(_Plugin):
+    """Local plugin, to be run and loaded where bot is running at"""
+
+    @abc.abstractmethod
+    async def on_message(self, target, by, message):
+        """called on message from user or channel"""
 
 
 class RemotePlugin:
