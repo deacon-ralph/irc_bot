@@ -73,7 +73,7 @@ def load_py_plugins(name=None, reload=False):
         module = importlib.import_module(f'bot_modules.py.{plugin}')
         if reload:
             importlib.reload(module)
-            _logger.info(f'{name} reloaded...')
+            _logger.info(f'{module} reloaded...')
         klass = getattr(module, 'Plugin')
         instance = klass()
         instance._name = plugin

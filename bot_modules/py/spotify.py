@@ -51,7 +51,7 @@ class Plugin(plugin_api.LocalPlugin):
             except AttributeError:
                 pass
             except Exception:
-                _logger.error('Failed to parse spotify link')
+                _logger.exception('Failed to parse spotify link', exc_info=True)
 
     def help_msg(self):
         return 'displays spotify artist + track title'

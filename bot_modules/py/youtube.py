@@ -67,6 +67,6 @@ class Plugin(plugin_api.LocalPlugin):
             except AttributeError:
                 pass
             except Exception:
-                _logger.error('Failed to parse youtube link')
+                _logger.exception('Failed to parse youtube link', exc_info=True)
 
 

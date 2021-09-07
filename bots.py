@@ -12,7 +12,7 @@ class FamilyFriendlyChatBot(pydle.Client):
 
     plugins = None
     _chatnet = None
-    _channels = None
+    _channel_list = None
 
     @property
     def chatnet(self):
@@ -20,7 +20,7 @@ class FamilyFriendlyChatBot(pydle.Client):
         return self._chatnet
 
     @property
-    def channels(self):
+    def channel_list(self):
         """Returns list of ChannelModels
 
         :returns: list of ChannelModel instances
