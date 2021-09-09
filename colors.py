@@ -1,3 +1,11 @@
+"""message formatting module"""
+import re
+
+STRIP_REGEX = re.compile(
+    "\x1f|\x02|\x12|\x0f|\x16|\x03(?:\d{1,2}(?:,\d{1,2})?)?",
+    re.UNICODE
+)
+
 WHITE = '00'
 BLACK = '01'
 BLUE = '02'
@@ -35,4 +43,9 @@ def colorize(text, fg, bg=None):
         return f'{CONTROL_COLOR}{fg}{text}{CONTROL_COLOR}'
     else:
         return f'{CONTROL_COLOR}{fg},{bg}{text}{CONTROL_COLOR}'
+
+
+def strip_formatting(message):
+    """Returns message stripped of all formatting"""
+    return STRIP_REGEX.sub(message, '')
 
