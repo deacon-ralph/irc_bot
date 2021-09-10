@@ -43,7 +43,7 @@ def _maybe_log(msg):
     if not msg.endswith(EOS):
         msg += '.'
     with open('/irc_bot/chatter.log', 'a') as f:
-        f.write(f'\n{msg}')
+        f.write(f'\n{msg.capitalize()}')
 
 
 def _shitpost(seed_word=None):
