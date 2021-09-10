@@ -3,7 +3,11 @@ import asyncio
 import random
 
 import colors
+import logger
 import plugin_api
+
+
+_logger = logger.LOGGER
 
 # End of Sentence for Markov chaining
 EOS = ('.', '?', '!')
@@ -42,12 +46,12 @@ def _maybe_log(msg):
         f.write(f'\n{msg}')
 
 
-def _shitpost():
+def _shitpost(seed_word=None):
     with open('/irc_bot/chatter.log', "r") as log:
         text = log.read()
     words = text.split()
     model = _build_dict(words)
-    sentence = _generate_sentence(model)
+    sentence = _generate_sentence(model, seed_word)
     return sentence
 
 
@@ -72,7 +76,7 @@ def _build_dict(words):
     return d
 
 
-def _generate_sentence(d):
+def _generate_sentence(d, seed_word):
     """Generate sentence
 
     :param dict d: dict of words
@@ -80,8 +84,16 @@ def _generate_sentence(d):
     :returns: a sentence based off of the words
     :rtype: str
     """
-    li = [key for key in d.keys() if key[0][0].isupper()]
-    key = random.choice(li)
+    words_set = [key for key in d.keys() if key[0][0].isupper()]
+    if seed_word:
+        key_tuples = [i for i in words_set if seed_word in i[0] or seed_word in i[1]]
+        try:
+            key = random.choice(key_tuples)
+        except IndexError:
+            _logger.error('IndexError, using random')
+            key = random.choice(words_set)
+    else:
+        key = random.choice(words_set)
     li = []
     first, second = key
     li.append(first)
@@ -111,9 +123,15 @@ class Plugin(plugin_api.LocalPlugin):
         if not self.enabled:
             return
         await self.exec_thread(_maybe_log, message)
-        if message == '.markov':
+        if message.startswith('.markov'):
+            parts = message.split(' ')
+            if len(parts) == 1:
+                args = None
+            elif len(parts) > 1:
+                args = parts[1]
+            else:
+                return
             sentence = await asyncio.ensure_future(
-                self.exec_proc(_shitpost)
+                self.exec_proc(_shitpost, args)
             )
             await self.client.message(target, sentence)
-
