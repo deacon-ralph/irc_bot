@@ -86,7 +86,11 @@ def _generate_sentence(d, seed_word):
     """
     words_set = [key for key in d.keys() if key[0][0].isupper()]
     if seed_word:
-        key_tuples = [i for i in words_set if seed_word in i[0] or seed_word in i[1]]
+        key_tuples = [
+            i for i in words_set
+            if seed_word.lower() in i[0][0].lower() + i[0][1:]
+            or seed_word.lower() in i[1][0].lower() + i[1][1:]
+        ]
         try:
             key = random.choice(key_tuples)
         except IndexError:
