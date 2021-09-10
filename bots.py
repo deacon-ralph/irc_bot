@@ -10,9 +10,19 @@ _logger = logger.LOGGER
 class FamilyFriendlyChatBot(pydle.Client):
     """chat bot with command processing and all the standard IRC things"""
 
-    plugins = None
+    _plugins = None
     _chatnet = None
     _channel_list = None
+
+    @property
+    def plugins(self):
+        return self._plugins
+
+    @plugins.setter
+    def plugins(self, plugins):
+        self._plugins = plugins
+        for _, plugin in plugins.items():
+            plugin.on_loaded(self)
 
     @property
     def chatnet(self):

@@ -47,9 +47,9 @@ def _get_plugin_names():
     proj_folder = pathlib.Path(__file__).parent.resolve()
     py_modules = proj_folder.joinpath('bot_modules', 'py')
     plugins = glob.glob(f'{py_modules}{os.path.sep}*.py')
-    plugins.remove('/irc_bot/bot_modules/py/__init__.py')
+    plugins.remove(f'{py_modules}{os.path.sep}__init__.py')
     _logger.info(f'found plugins: {plugins}')
-    return [p.split('/irc_bot/bot_modules/py/')[1].replace('.py', '') for p in plugins]
+    return [p.split(f'{py_modules}{os.path.sep}')[1].replace('.py', '') for p in plugins]
 
 
 def load_py_plugins(name=None, reload=False):

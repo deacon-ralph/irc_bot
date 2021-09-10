@@ -1,5 +1,7 @@
 """simple markov chaining for shitposting"""
 import asyncio
+import os
+import pathlib
 import random
 
 import colors
@@ -42,12 +44,15 @@ def _maybe_log(msg):
         return
     if not msg.endswith(EOS):
         msg += '.'
-    with open('/irc_bot/chatter.log', 'a') as f:
+
+    proj_folder = pathlib.Path(__file__).parent.parent.parent.resolve()
+    with open(f'{proj_folder}{os.path.sep}chatter.log', 'a') as f:
         f.write(f'\n{msg.capitalize()}')
 
 
 def _shitpost(seed_word=None):
-    with open('/irc_bot/chatter.log', "r") as log:
+    proj_folder = pathlib.Path(__file__).parent.parent.parent.resolve()
+    with open(f'{proj_folder}{os.path.sep}chatter.log', "r") as log:
         text = log.read()
     words = text.split()
     model = _build_dict(words)
@@ -120,7 +125,7 @@ class Plugin(plugin_api.LocalPlugin):
     """Markov plugin"""
 
     def help_msg(self):
-        return ".markov to generate random sentence"
+        return ".markov <optional arg> to generate random sentence"
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
