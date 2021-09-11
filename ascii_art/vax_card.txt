@@ -14,17 +14,17 @@
 01,00 Date of birth             Patient number (medical record or IIS record number).
 01,00▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂▂
 01,00         ▏Product Name/Maker    ▏                  ▏                            
-01,00 Vaccine ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁▏    00,00▁01,00Date00,00╱▁▁01,00      ▏  Healthcare Professional   
+01,00 Vaccine ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁▏    00,00 01,00Date00,00    01,00     ▏  Healthcare Professional   
 01,00▁▁▁▁▁▁▁▁▁▁Lot Number▁▁▁▁▁▁▁▁▁▁▁▁▏▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▏▁▁or Clinic Site▁▁▁▁▁▁▁▁▁▁▁▁
 01,00         ▏                      ▏                  ▏                            
 01,00 1st Dose▁ Pfizer▁ ▁ ▁ ▁ ▁ ▁ ▁ ▁▏                  ▏  Holy Patron Saint of      
-01,00 COVID-19▏  #42069              ▏    9▁╱11╱2021    ▏  Science and HIV grifter   
+01,00 COVID-19▏  #42069              ▏   00,00 01,009▁╱11╱2021    ▏  Science and HIV grifter   
 01,00▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▏▁▁▁▁mm▁dd▁yy▁▁▁▁▁▁▏▁▁Dr Fauci▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 01,00         ▏ Horse Paste          ▏                  ▏                            
-01,00 BOOSTER ▏  m12h4nDz            ▏   00,00▁01,009/11▁╱2021    ▏  Dr. Ralph                 
+01,00 BOOSTER ▏  m12h4nDz            ▏   00,00 01,009/11▁╱2021    ▏  Dr. Ralph                 
 01,00▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▏▁▁▁ mm▁dd▁yy ▁▁▁▁▁▏▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 01,00         ▏                      ▏                  ▏                            
 01,00         ▏ OxyContin            ▏                  ▏  BLACK_MAN                 
-01,00 BOOSTER ▏    80mg              ▏   00,00▁01,009 ╱11╱2021    ▏                            
+01,00 BOOSTER ▏    80mg              ▏   00,00 01,009 ╱11╱2021    ▏                            
 01,00▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▏▁▁▁▁mm▁dd yy  ▁▁▁▁▏▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
 01,00                                                                                
