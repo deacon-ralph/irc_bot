@@ -1,8 +1,8 @@
-01,00                                                                    01,01 01,00          01,01 
-01,00                                                                    01,01 01,00   CDC    01,01 
-01,00      COVID-19 Vaccination Record Card                              01,01 01,00          01,01 
-01,00                                                                    01,01            
-01,00 Please Keep this record card which, which includes medical information         
+01,00                                                                   ▄▄▄▄▄▄▄▄▄▄▄ 00,00 
+01,00                                                                   01,01 00,00 01,00  00,00 CDC  01,01 00,00  
+01,00      COVID-19 Vaccination Record Card                             01,01 00,00 01,00  CDC   01,01 01,00 00,00 
+01,00▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃ 01,01 01,00▄▄▄▄▄▄▄▄▄01,01 00,00  
+01,00 Please Keep this record card, which includes medical information               
 01,00about the vaccines you have received.                                           
 01,00Por Favor, guarde esta tarjeta de registro, que incluye informacion             
 01,00medica sobre las vacunas que ha recibido.                                       
