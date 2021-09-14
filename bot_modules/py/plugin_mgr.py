@@ -19,6 +19,7 @@ class Plugin(plugin_api.LocalPlugin):
                 ','.join(list(self.client.plugins.keys()))
             )
         if message == '.plugins reload':
+            return  # TODO this needs fixed
             self.client.plugins = common.load_py_plugins(reload=True)
             for _, plugin in self.client.plugins.items():
                 plugin.on_loaded(self.client)
