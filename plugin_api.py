@@ -96,7 +96,7 @@ class _Plugin(abc.ABC):
         :returns: value from target function
         """
         loop = pydle.client.get_event_loop()
-        return await loop.run_in_executor(_PROC_EXECUTOR, target, *args)
+        return await loop.run_in_executor(_THREAD_EXECUTOR, target, *args)
 
 
 class LocalPlugin(_Plugin):
