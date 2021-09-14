@@ -58,6 +58,7 @@ class Plugin(plugin_api.LocalPlugin):
                 if 'youtube' in url or 'youtu.be' in url:
                     title, duration = await self._parse_youtube(url)
                     play_btn = colors.colorize(' ▶ ', fg=colors.SILVER, bg=colors.RED)
+                    title = ' ' + title + ' '  # add padding
                     title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
                     duration = colors.colorize(f'[{duration}]', fg=colors.BLACK, bg=colors.SILVER)
                     await self.client.message(
