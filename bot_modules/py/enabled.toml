@@ -3,3 +3,4 @@ markov = true
 plugin_manager = true
 spotify = false
 youtube = true
+dictionary = true
