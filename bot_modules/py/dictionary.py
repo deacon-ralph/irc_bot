@@ -60,5 +60,5 @@ class Plugin(plugin_api.LocalPlugin):
 
     def help_msg(self):
         return {
-            '.define': 'define <word>'
+            '.define': '.define <word>'
         }
