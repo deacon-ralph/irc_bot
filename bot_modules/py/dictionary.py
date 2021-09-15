@@ -36,9 +36,9 @@ class Plugin(plugin_api.LocalPlugin):
                 return ['I AINT FIND THAT WORD ON UD CUZ!']
             definitions = []
             for definition in first_two:
-                the_definition = f'{colors.colorize(definition["word"], fg=colors.RED)}: ' \
+                the_definition = f'{colors.colorize(" "+definition["word"]+" ", fg=colors.BLUE, bg=colors.WHITE)}: ' \
                                  f'{definition["definition"]}\r\n' \
-                                 f'{colors.colorize("example", fg=colors.PINK)}: {definition["example"]}'
+                                 f'{colors.colorize(" example ", fg=colors.WHITE, bg=colors.BLUE)}: {colors.BOLD}{definition["example"]}{colors.BOLD}'
                 definitions.append(the_definition)
             return definitions
         except Exception:
