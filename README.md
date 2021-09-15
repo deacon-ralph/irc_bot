@@ -24,5 +24,6 @@ docker run --rm \
 -t <tag>
 ```
 
-GLHF, CHAT HARD
+### GLHF, CHAT HARD
+
 ![alt GNAA Public Health Message](irc-covid-message.png)
