@@ -12,6 +12,40 @@ class Plugin(plugin_api.LocalPlugin):
     """Dictionary plugin"""
 
     @classmethod
+    def _get_urban(cls, word):
+        """Returns urban dict definition
+
+        :param str word: the word
+
+        :returns: urban dict definition
+        :rtype: [str]
+        """
+        url = f'https://api.urbandictionary.com/v0/define?term={word}'
+        try:
+            resp = requests.get(url, timeout=5.0)
+            resp.raise_for_status()
+        except requests.exceptions.RequestException:
+            _logger.exception(f'request failed', exc_info=True)
+            return ['request failed :(']
+
+        try:
+            json_resp = resp.json()
+            def_list = json_resp['list']
+            first_two = def_list[:2]
+            if not first_two:
+                return ['I AINT FIND THAT WORD ON UD CUZ!']
+            definitions = []
+            for definition in first_two:
+                the_definition = f'{colors.colorize(definition["word"], fg=colors.RED)}: ' \
+                                 f'{definition["definition"]}\r\n' \
+                                 f'{colors.colorize("example", fg=colors.PINK)}: {definition["example"]}'
+                definitions.append(the_definition)
+            return definitions
+        except Exception:
+            _logger.exception('Failed to parse response', exc_info=True)
+            return ['couldnt parse the response :( im dumb']
+
+    @classmethod
     def _get_definitions(cls, word):
         """Returns definitions of a word
 
@@ -57,8 +91,14 @@ class Plugin(plugin_api.LocalPlugin):
             definitions = self._get_definitions(word)
             for definition in definitions:
                 await self.client.message(target, definition)
+        elif message.startswith('.ud'):
+            word = message.replace('.ud', '')
+            definitions = self._get_urban(word)
+            for definition in definitions:
+                await self.client.message(target, definition)
 
     def help_msg(self):
         return {
-            '.define': '.define <word>'
+            'define': '.define <word> - wil show all definitions[FUCK CAN-SPAM]',
+            'urban': '.ud <word> - will show first 2 urban definitions'
         }
