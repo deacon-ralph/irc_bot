@@ -23,3 +23,6 @@ docker run --rm \
 -v ~/irc_bot/bot_modules:/irc_bot/bot_modules \
 -t <tag>
 ```
+
+GLHF, CHAT HARD
+![alt GNAA Public Health Message](irc-covid-message.png)
