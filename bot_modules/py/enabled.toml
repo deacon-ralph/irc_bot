@@ -1,6 +1,6 @@
 help_module = true
 markov = true
 plugin_manager = true
-spotify = false
+spotify = true
 youtube = true
 dictionary = true
