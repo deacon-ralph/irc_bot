@@ -42,6 +42,7 @@ class Plugin(plugin_api.LocalPlugin):
                 ).group("url")
                 if 'spotify' in url:
                     title = await self._parse_spotify(url)
+                    title = ' ' + title + ' '  # add padding
                     song_btn = colors.colorize(' ♪ ', fg=colors.BLACK, bg=colors.LIME)
                     title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
                     await self.client.message(
