@@ -6,3 +6,4 @@ youtube = true
 dictionary = true
 ircart = true
 ascii = true
+discord_relay = true

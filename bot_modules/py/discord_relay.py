@@ -12,8 +12,8 @@ import plugin_api
 
 _logger = logger.LOGGER
 
-_MEMBER_CHANNEL_ID = 880514005410652200
-_PUBLIC_CHANNEL_ID = 881456369025290251
+# _MEMBER_CHANNEL_ID = 880514005410652200
+# _PUBLIC_CHANNEL_ID = 881456369025290251
 
 
 class _DiscordClient(discord.Client):
@@ -25,6 +25,12 @@ class _DiscordClient(discord.Client):
     async def on_ready(self):
         _logger.info('Logged into discord as {0.user}'.format(self))
 
+    def _get_relay_settings(self):
+        for server in common.CONFIG['servers']:
+            for chatnet, settings in server.items():
+                if chatnet == self.irc_client.chatnet:
+                    return settings['discord_relay']
+
     async def on_message(self, message):
         if message.author == self.user:
             return
@@ -34,9 +40,19 @@ class _DiscordClient(discord.Client):
 
         else:
             formatted_name = f'{colors.BOLD}{message.author.display_name}{colors.BOLD}'
-            await self.irc_client.message(
-                '#church', f'<{formatted_name}>: {message.content}'
-            )
+            relay_settings = self._get_relay_settings()
+
+            if not relay_settings:
+                _logger.info(
+                    f'no discord_relay settings for {self.irc_client.chatnet}'
+                )
+                return
+
+            for relay in relay_settings:
+                if message.channel.id == relay['discord_channel']:
+                    await self.irc_client.message(
+                        relay['irc_channel'], f'<{formatted_name}>: {message.content}'
+                    )
 
 
 class Plugin(plugin_api.LocalPlugin):
@@ -53,11 +69,17 @@ class Plugin(plugin_api.LocalPlugin):
         self.discord_client = _DiscordClient(irc_client=self.client)
         asyncio.ensure_future(
             self.discord_client.start(
-                common.CONFIG['relays']['discord']['token'])
+                common.CONFIG['discord_token'])
         )
 
     def help_msg(self):
         return 'discord relay bot'
+
+    def _get_relay_settings(self):
+        for server in common.CONFIG['servers']:
+            for chatnet, settings in server.items():
+                if chatnet == self.client.chatnet:
+                    return settings.get('discord_relay')
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
@@ -65,9 +87,24 @@ class Plugin(plugin_api.LocalPlugin):
             return
         if message.startswith('.'):
             return
-        if target == '#church':
-            pub_chan = self.discord_client.get_channel(_PUBLIC_CHANNEL_ID)
-            await pub_chan.send(f'**<{by}>**: {message}')
+        else:
+            relay_settings = self._get_relay_settings()
+
+            if not relay_settings:
+                _logger.info(
+                    f'no discord_relay settings for {self.client.chatnet}'
+                )
+                return
+
+            for relay in relay_settings:
+                if target == relay['irc_channel']:
+                    discord_chan = self.discord_client.get_channel(
+                        relay['discord_channel']
+                    )
+                    if discord_chan:
+                        await discord_chan.send(f'**<{by}>**: {message}')
+
+            # logging stuff
             print('channels', self.discord_client.get_all_channels())
             for guild in self.discord_client.guilds:
                 _logger.info(guild.name)
