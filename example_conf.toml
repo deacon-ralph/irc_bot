@@ -2,9 +2,11 @@ nick = "mybot"
 username = "botusername"
 realname = "botrealname"
 fallback_nicknames = [ "mybot1", "mybot2" ]
+discord_token = "<your bot applications secret token>"
 
 [[servers]]
 [servers.nooscope]
+auto_connect = true
 nick = "mybot"
 username = "botusername"
 realname = "botrealname"
@@ -14,6 +16,10 @@ port = 6697
 use_tls = true
 tls_verify = false
 
+  [[servers.nooscope.discord_relay]]
+  irc_channel = "#chanone"
+  discord_channel = 123456789111213141 # the channel id
+
   [[servers.nooscope.channels]]
   name = "#chanone"
 
@@ -21,6 +27,7 @@ tls_verify = false
   name = "#chantwo"
 
 [servers.server2]
+auto_connect = false
 uri = "irc.server2.net"
 port = 6697
 use_tls = true
