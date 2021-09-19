@@ -78,4 +78,3 @@ class Plugin(plugin_api.LocalPlugin):
                 await self.client.message(target, ''.join(lines))
             else:
                 _logger.info('no lines found, was the file empty?')
-
