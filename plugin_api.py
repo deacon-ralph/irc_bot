@@ -1,5 +1,6 @@
 """Plugin api for python"""
 import abc
+import bots
 import concurrent.futures as concurrent_futures
 
 import pydle
@@ -22,7 +23,7 @@ class _Plugin(abc.ABC):
     def on_loaded(self, client):
         """Called when bot is connected. will set client here to handle IRC
 
-        :param pydle.Client client: irc client impl
+        :param bots.FamilyFriendlyChatBot client: irc client impl
         """
         self.client = client
 
