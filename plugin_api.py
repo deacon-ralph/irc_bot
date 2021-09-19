@@ -26,6 +26,9 @@ class _Plugin(abc.ABC):
         """
         self.client = client
 
+    def on_unload(self):
+        """Can be called when things need to be stopped/unloaded"""
+
     def showhelp(self, key=None):
         """Shows help menu for given module
 
@@ -128,16 +131,6 @@ class LocalPlugin(_Plugin):
                 f'🔌 {self.name} '
                 f'{colors.colorize("D I S A B L E D", fg=colors.RED)}'
             )
-        # TODO fix this, they dont reload properly :(
-        # elif message == f'.{self.name} reload':
-        #     self.client.plugins = common.load_py_plugins(self.name, True)
-        #     for _, plugin in self.client.plugins.items():
-        #         plugin.on_loaded(self.client)
-        #     await self.client.message(
-        #         target,
-        #         f'🔌 {self.name} {colors.BOLD}R E L O A D E D{colors.BOLD}'
-        #     )
-
 
 
 class RemotePlugin:

@@ -52,13 +52,12 @@ def _get_plugin_names():
     return [p.split(f'{py_modules}{os.path.sep}')[1].replace('.py', '') for p in plugins]
 
 
-def load_py_plugins(name=None, reload=False):
+def load_py_plugins(reload=False):
     """Returns dict of initialized plugin objects
 
     If name is supplied, only that plugin will be reloaded
     If reload is Ture, plugins will be reloaded
 
-    :param str|None name: name of plugin
     :param bool reload: should reload?
 
     :returns: dict of plugins as {key: instance}
@@ -66,8 +65,6 @@ def load_py_plugins(name=None, reload=False):
     """
     instances = {}
     plugins = _get_plugin_names()
-    if name:
-        plugins = [name]
     enabled_conf = _get_enabled_py_conf()
     for plugin in plugins:
         module = importlib.import_module(f'bot_modules.py.{plugin}')
