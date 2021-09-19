@@ -20,8 +20,6 @@ class Plugin(plugin_api.LocalPlugin):
             )
         if message == '.plugins reload':
             self.client.plugins = common.load_py_plugins(reload=True)
-            for _, plugin in self.client.plugins.items():
-                plugin.on_loaded(self.client)
             await self.client.message(
                 target,
                 f'🔌 {colors.BOLD}R E L O A D E D{colors.BOLD} 🔌'
