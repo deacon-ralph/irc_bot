@@ -44,8 +44,6 @@ class FamilyFriendlyChatBot(pydle.Client):
         will do initial loading of enabled plugins
         """
         self.plugins = common.load_py_plugins()
-        for _, plugin in self.plugins.items():
-            plugin.on_loaded(self)
 
         for chan in self._channels:
             await self.join(chan.name, chan.password)
