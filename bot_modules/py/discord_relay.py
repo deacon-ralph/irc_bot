@@ -29,7 +29,7 @@ class _DiscordClient(discord.Client):
         for server in common.CONFIG['servers']:
             for chatnet, settings in server.items():
                 if chatnet == self.irc_client.chatnet:
-                    return settings['discord_relay']
+                    return settings.get('discord_relay')
 
     async def on_message(self, message):
         if message.author == self.user:
