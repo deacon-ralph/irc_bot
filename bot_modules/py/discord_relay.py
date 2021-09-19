@@ -39,7 +39,6 @@ class _DiscordClient(discord.Client):
             )
 
 
-
 class Plugin(plugin_api.LocalPlugin):
     """Discord relay plugin"""
 
