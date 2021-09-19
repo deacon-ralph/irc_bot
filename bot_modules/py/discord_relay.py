@@ -44,9 +44,6 @@ class Plugin(plugin_api.LocalPlugin):
 
     discord_client = None
 
-    def __del__(self):
-        asyncio.ensure_future(self.discord_client.close())
-
     def on_loaded(self, client):
         super().on_loaded(client)
         self.discord_client = _DiscordClient(irc_client=self.client)
