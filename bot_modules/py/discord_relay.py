@@ -33,7 +33,7 @@ class _DiscordClient(discord.Client):
             await message.channel.send('pong')
 
         else:
-            formatted_name = f'{colors.BOLD}{message.author.nick}{colors.BOLD}'
+            formatted_name = f'{colors.BOLD}{message.author.display_name}{colors.BOLD}'
             await self.irc_client.message(
                 '#church', f'<{formatted_name}>: {message.content}'
             )
