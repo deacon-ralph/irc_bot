@@ -4,3 +4,5 @@ plugin_manager = true
 spotify = true
 youtube = true
 dictionary = true
+ircart = true
+ascii = true
