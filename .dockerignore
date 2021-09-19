@@ -2,3 +2,4 @@
 *.log
 config.toml
 **/bot_modules/**
+ascii_art/**
