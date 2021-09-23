@@ -14,9 +14,19 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_message(self, target, by, message):
         if message == '.plugins list':
+            plugin_list = []
+            for name, plugin in self.client.plugins.items():
+                if plugin.enabled:
+                    plugin_list.append(
+                        colors.colorize(name, fg=colors.GREEN)
+                    )
+                else:
+                    plugin_list.append(
+                        colors.colorize(name, fg=colors.RED)
+                    )
             await self.client.message(
                 target,
-                ','.join(list(self.client.plugins.keys()))
+                ', '.join(plugin_list)
             )
         if message == '.plugins reload':
             self.client.plugins = common.load_py_plugins(reload=True)
