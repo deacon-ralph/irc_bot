@@ -16,6 +16,20 @@ _logger = logger.LOGGER
 # _PUBLIC_CHANNEL_ID = 881456369025290251
 
 
+def _get_relay_settings(irc_client):
+    """Returns discord relay settings if available
+
+    :param irc_client: the irc client
+
+    :returns: list of dicts of channel mappings
+    :rtype: dict
+    """
+    for server in common.CONFIG['servers']:
+        for chatnet, settings in server.items():
+            if chatnet == irc_client.chatnet:
+                return settings.get('discord_relay')
+
+
 class _DiscordClient(discord.Client):
 
     def __init__(self, *, irc_client, loop=None, **options):
@@ -24,12 +38,6 @@ class _DiscordClient(discord.Client):
 
     async def on_ready(self):
         _logger.info('Logged into discord as {0.user}'.format(self))
-
-    def _get_relay_settings(self):
-        for server in common.CONFIG['servers']:
-            for chatnet, settings in server.items():
-                if chatnet == self.irc_client.chatnet:
-                    return settings['discord_relay']
 
     async def on_message(self, message):
         if message.author == self.user:
@@ -40,7 +48,7 @@ class _DiscordClient(discord.Client):
 
         else:
             formatted_name = f'{colors.BOLD}{message.author.display_name}{colors.BOLD}'
-            relay_settings = self._get_relay_settings()
+            relay_settings = _get_relay_settings(self.irc_client)
 
             if not relay_settings:
                 _logger.info(
@@ -72,14 +80,27 @@ class Plugin(plugin_api.LocalPlugin):
                 common.CONFIG['discord_token'])
         )
 
+    async def on_nick_change(self, old, new):
+        await super().on_nick_change(old, new)
+        relay_settings = _get_relay_settings(self.client)
+
+        if not relay_settings:
+            _logger.info(
+                f'no discord_relay settings for {self.client.chatnet}'
+            )
+            return
+
+        for relay in relay_settings:
+            discord_chan = self.discord_client.get_channel(
+                relay['discord_channel']
+            )
+            if discord_chan:
+                await discord_chan.send(
+                    f'**{old}** *is now known as*  **{new}**'
+                )
+
     def help_msg(self):
         return 'discord relay bot'
-
-    def _get_relay_settings(self):
-        for server in common.CONFIG['servers']:
-            for chatnet, settings in server.items():
-                if chatnet == self.client.chatnet:
-                    return settings.get('discord_relay')
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
@@ -88,7 +109,7 @@ class Plugin(plugin_api.LocalPlugin):
         if message.startswith('.'):
             return
         else:
-            relay_settings = self._get_relay_settings()
+            relay_settings = _get_relay_settings(self.client)
 
             if not relay_settings:
                 _logger.info(

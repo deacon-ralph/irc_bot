@@ -60,3 +60,15 @@ class FamilyFriendlyChatBot(pydle.Client):
             return  # dont respond to ourself
         for _, plugin in self.plugins.items():
             await plugin.on_message(target, by, message)
+
+    async def on_nick_change(self, old, new):
+        """Called on nick change
+
+        :param str old: old nick
+        :param stre new: new nick
+        """
+        _logger.info(f'{old} changed nick to {new}')
+        if not self.plugins:
+            return
+        for _, plugin in self.plugins.items():
+            await plugin.on_nick_change(old, new)
