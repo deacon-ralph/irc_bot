@@ -131,7 +131,3 @@ class Plugin(plugin_api.LocalPlugin):
                 _logger.info(guild.name)
                 for channel in guild.text_channels:
                     _logger.info(f'{channel}, {channel.name}, {channel.id}')
-
-
-
-
