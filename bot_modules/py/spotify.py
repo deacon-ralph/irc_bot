@@ -28,7 +28,7 @@ class Plugin(plugin_api.LocalPlugin):
 
         soup = bs4.BeautifulSoup(html, features='lxml')
         title = soup.find('title')
-        return title.string.replace(' | Spotify', '')
+        return title.string.replace(' | Spotify', '').replace('song by ', '')
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
