@@ -16,15 +16,16 @@ _logger = logger.LOGGER
 # _PUBLIC_CHANNEL_ID = 881456369025290251
 
 
-def _get_relay_settings(irc_client):
+def _get_relay_settings(irc_client, config):
     """Returns discord relay settings if available
 
     :param irc_client: the irc client
+    :param dict config: config
 
     :returns: list of dicts of channel mappings
     :rtype: dict
     """
-    for server in common.CONFIG['servers']:
+    for server in config['servers']:
         for chatnet, settings in server.items():
             if chatnet == irc_client.chatnet:
                 return settings.get('discord_relay')
@@ -32,7 +33,8 @@ def _get_relay_settings(irc_client):
 
 class _DiscordClient(discord.Client):
 
-    def __init__(self, *, irc_client, loop=None, **options):
+    def __init__(self, *, irc_client, config, loop=None, **options):
+        self.config = config
         self.irc_client = irc_client
         super().__init__(loop=loop, **options)
 
@@ -48,7 +50,7 @@ class _DiscordClient(discord.Client):
 
         else:
             formatted_name = f'{colors.BOLD}{message.author.display_name}{colors.BOLD}'
-            relay_settings = _get_relay_settings(self.irc_client)
+            relay_settings = _get_relay_settings(self.irc_client, self.config)
 
             if not relay_settings:
                 _logger.info(
@@ -67,13 +69,18 @@ class Plugin(plugin_api.LocalPlugin):
     """Discord relay plugin"""
 
     discord_client = None
+    config = None
 
     def on_loaded(self, client):
         super().on_loaded(client)
-        self.discord_client = _DiscordClient(irc_client=self.client)
+        self.config = common.parse_config()
+        self.discord_client = _DiscordClient(
+            irc_client=self.client,
+            config=self.config
+        )
         asyncio.ensure_future(
             self.discord_client.start(
-                common.CONFIG['discord_token'])
+                self.config['discord_token'])
         )
 
     def on_reload(self):
@@ -83,7 +90,7 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_nick_change(self, old, new):
         await super().on_nick_change(old, new)
-        relay_settings = _get_relay_settings(self.client)
+        relay_settings = _get_relay_settings(self.client, self.config)
 
         if not relay_settings:
             _logger.info(
@@ -110,7 +117,7 @@ class Plugin(plugin_api.LocalPlugin):
         if message.startswith('.'):
             return
         else:
-            relay_settings = _get_relay_settings(self.client)
+            relay_settings = _get_relay_settings(self.client, self.config)
 
             if not relay_settings:
                 _logger.info(

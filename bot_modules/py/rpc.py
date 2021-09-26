@@ -31,7 +31,7 @@ class Plugin(plugin_api.LocalPlugin):
             asyncio.ensure_future(self.socket_listen())
 
     async def socket_recv(self, reader, writer):
-        data = (await reader.read(255)).decode('utf8')
+        data = (await reader.read(4096)).decode('utf8')
         _logger.info(f'got data: {data}')
         response = 'here is a response!\n'
         writer.write(response.encode('utf8'))
