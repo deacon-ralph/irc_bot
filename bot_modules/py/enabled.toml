@@ -8,3 +8,4 @@ ircart = true
 ascii = true
 discord_relay = true
 rsock = true
+rpc = true

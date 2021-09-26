@@ -22,8 +22,8 @@ class Plugin(plugin_api.LocalPlugin):
 
     def on_reload(self):
         super().on_reload()
-        self.server.close()
-        print('close called')
+        if self.server:
+            self.server.close()
 
     def on_loaded(self, client):
         super().on_loaded(client)
@@ -40,7 +40,7 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def socket_listen(self):
         self.server = await asyncio.start_server(
-            self.socket_recv, 'localhost',
+            self.socket_recv, '0.0.0.0',
             12345
         )
         async with self.server:

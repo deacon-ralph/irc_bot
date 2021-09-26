@@ -1,5 +1,5 @@
 docker run --rm \
--p 6680:6680 \
+-p 12345:12345 \
 -v ~/irc_bot/ascii_art:/irc_bot/ascii_art \
 -v ~/irc_bot/chatter.log:/irc_bot/chatter.log \
 -v ~/irc_bot/config.toml:/irc_bot/config.toml \
