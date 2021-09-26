@@ -22,8 +22,8 @@ class Plugin(plugin_api.LocalPlugin):
 
     def on_reload(self):
         super().on_reload()
-        self.server.close()
-        print('close called')
+        if self.server:
+            self.server.close()
 
     def on_loaded(self, client):
         super().on_loaded(client)
