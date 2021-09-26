@@ -31,11 +31,20 @@ class Plugin(plugin_api.LocalPlugin):
             asyncio.ensure_future(self.socket_listen())
 
     async def socket_recv(self, reader, writer):
-        data = (await reader.read(4096)).decode('utf8')
-        _logger.info(f'got data: {data}')
-        response = 'here is a response!\n'
-        writer.write(response.encode('utf8'))
-        await writer.drain()
+        while True:
+            try:
+                data = (await reader.read(4096)).decode('utf8')
+            except BrokenPipeError:
+                _logger.error('broken pipe')
+                break
+            _logger.info(f'got data: {data}')
+            response = 'here is a response!\n'
+            writer.write(response.encode('utf8'))
+            try:
+                await writer.drain()
+            except (ConnectionResetError, ConnectionError):
+                _logger.error('connection closed')
+        writer.close()
         await writer.wait_closed()
 
     async def socket_listen(self):
