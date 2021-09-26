@@ -30,3 +30,4 @@ __pycache__/
 # dont include the real config
 config.toml
 junk.json
+certs/selfsigned.key
