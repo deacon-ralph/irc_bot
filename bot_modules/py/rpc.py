@@ -86,7 +86,7 @@ class Plugin(plugin_api.LocalPlugin):
         :param asyncio.StreamWriter writer: socket writer
         """
         data = CLIENT_CMD
-        while data != CLIENT_END:
+        while not data.startswith(CLIENT_END):
             try:
                 data = (await reader.read(4096)).decode('utf8')
                 if data.startswith(CLIENT_END):
