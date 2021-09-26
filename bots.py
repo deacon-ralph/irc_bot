@@ -20,7 +20,11 @@ class FamilyFriendlyChatBot(pydle.Client):
 
     @plugins.setter
     def plugins(self, plugins):
-        self._plugins = plugins
+        if self._plugins:  # call reload so we can clean things up
+            for _, plugin in self._plugins.items():
+                plugin.on_reload()
+
+        self._plugins = plugins  #
         for _, plugin in plugins.items():
             plugin.on_loaded(self)
 

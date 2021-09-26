@@ -68,10 +68,6 @@ class Plugin(plugin_api.LocalPlugin):
 
     discord_client = None
 
-    def __del__(self):
-        asyncio.ensure_future(self.discord_client.close())
-        self.discord_client = None
-
     def on_loaded(self, client):
         super().on_loaded(client)
         self.discord_client = _DiscordClient(irc_client=self.client)
@@ -79,6 +75,11 @@ class Plugin(plugin_api.LocalPlugin):
             self.discord_client.start(
                 common.CONFIG['discord_token'])
         )
+
+    def on_reload(self):
+        super().on_reload()
+        asyncio.ensure_future(self.discord_client.close())
+        self.discord_client = None
 
     async def on_nick_change(self, old, new):
         await super().on_nick_change(old, new)

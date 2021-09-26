@@ -27,8 +27,8 @@ class _Plugin(abc.ABC):
         """
         self.client = client
 
-    def on_unload(self):
-        """Can be called when things need to be stopped/unloaded"""
+    def on_reload(self):
+        """Called when reloading plugins"""
 
     def showhelp(self, key=None):
         """Shows help menu for given module
@@ -140,6 +140,3 @@ class LocalPlugin(_Plugin):
         :param stre new: new nick
         """
 
-
-class RemotePlugin:
-    """Remote plugin, do comms over ???"""
