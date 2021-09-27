@@ -91,18 +91,18 @@ class Plugin(plugin_api.LocalPlugin):
     async def on_nick_change(self, old, new):
         await super().on_nick_change(old, new)
         relay_settings = _get_relay_settings(self.client, self.config)
-
         if not relay_settings:
             _logger.info(
                 f'no discord_relay settings for {self.client.chatnet}'
             )
             return
 
+        whois = await self.client.whois(new)
         for relay in relay_settings:
             discord_chan = self.discord_client.get_channel(
                 relay['discord_channel']
             )
-            if discord_chan:
+            if discord_chan and relay['irc_channel'] in whois['channels']:
                 await discord_chan.send(
                     f'**{old}** *is now known as*  **{new}**'
                 )
