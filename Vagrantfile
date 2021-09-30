@@ -9,6 +9,7 @@ curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
 python3.9 /tmp/get-pip.py
 python3.9 -m pip install --upgrade setuptools
 python3.9 -m pip install -r /irc_bot/requirements.txt
+sudo apt install python3.9-dev python3.9-venv -y
 SCRIPT
 
 Vagrant.configure("2") do |config|

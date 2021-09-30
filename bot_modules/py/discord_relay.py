@@ -73,6 +73,8 @@ class Plugin(plugin_api.LocalPlugin):
 
     def on_loaded(self, client):
         super().on_loaded(client)
+        if not self.enabled:
+            return
         self.config = common.parse_config()
         self.discord_client = _DiscordClient(
             irc_client=self.client,
@@ -85,24 +87,25 @@ class Plugin(plugin_api.LocalPlugin):
 
     def on_reload(self):
         super().on_reload()
-        asyncio.ensure_future(self.discord_client.close())
+        if self.discord_client:
+            asyncio.ensure_future(self.discord_client.close())
         self.discord_client = None
 
     async def on_nick_change(self, old, new):
         await super().on_nick_change(old, new)
         relay_settings = _get_relay_settings(self.client, self.config)
-
         if not relay_settings:
             _logger.info(
                 f'no discord_relay settings for {self.client.chatnet}'
             )
             return
 
+        whois = await self.client.whois(new)
         for relay in relay_settings:
             discord_chan = self.discord_client.get_channel(
                 relay['discord_channel']
             )
-            if discord_chan:
+            if discord_chan and relay['irc_channel'] in whois['channels']:
                 await discord_chan.send(
                     f'**{old}** *is now known as*  **{new}**'
                 )
