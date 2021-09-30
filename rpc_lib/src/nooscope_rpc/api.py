@@ -109,7 +109,6 @@ class TcpClient:
         cafile = f'{pathlib.Path(__file__).parent.resolve()}' \
                  f'{os.path.sep}' \
                  f'selfsigned.cert'
-        print(cafile)
         context = ssl.create_default_context(
             ssl.Purpose.SERVER_AUTH,
             cafile=cafile

@@ -93,6 +93,8 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_nick_change(self, old, new):
         await super().on_nick_change(old, new)
+        if not self.enabled:
+            return
         relay_settings = _get_relay_settings(self.client, self.config)
         if not relay_settings:
             _logger.info(

@@ -10,6 +10,12 @@ cp example_conf.toml config.toml
 echo -en "Hello world.\nThis is the file used for markov." >> chatter.log 
 ```
 
+3. Generate cacert + key
+```bash
+cd certs
+openssl req -x509 -newkey rsa:2048 -keyout selfsigned.key -nodes -out selfsigned.cert -sha256 -days 1000
+```
+
 ## Building + Running container
 ```bash
 # Build container
