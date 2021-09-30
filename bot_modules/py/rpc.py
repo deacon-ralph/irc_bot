@@ -36,6 +36,7 @@ class Plugin(plugin_api.LocalPlugin):
                         f'{constants.RESTARTING}'
                     )
                 )
+                writer.close()
                 asyncio.ensure_future(writer.wait_closed())
             self.server.close()
 
@@ -145,6 +146,7 @@ class Plugin(plugin_api.LocalPlugin):
 
         _logger.info(f'LOOP WAS BROKEN: {data}')
         self.writers.remove(writer)
+        writer.close()
         await writer.wait_closed()
 
     async def socket_listen(self):
