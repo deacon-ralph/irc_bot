@@ -43,8 +43,8 @@ class Impl(api.IrcImpl):
    async def on_message(self, target, by, message):
       print(target, by, message)
       # do some shit like
-      if message == 'hack_a_gibson' and by == 'ZeroCool':
-         await self.rpc.send_message('#test', 'hacking gibson from RPC')
+      if message == 'hack_a_gibson':
+         await self.rpc.send_message(target, 'hacking gibson from RPC')
       elif message.startswith('dieplz'):
          await self.rpc.disconnect()
 
@@ -53,7 +53,7 @@ async def main():
    # endless loop to always try and connect
    while True:
       loop = asyncio.get_event_loop()
-      tcp = api.TcpClient('127.0.0.1', 12345, Impl(), loop)
+      tcp = api.TcpClient('127.0.0.1', 12345, Impl()) # use bots host ip
       await tcp.connect()
       await tcp.read()
 

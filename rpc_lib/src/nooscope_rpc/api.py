@@ -181,28 +181,3 @@ class TcpClient:
         _LOGGER.info(f'LOOP WAS BROKEN: {data}')
         self.writer.close()
         await self.writer.wait_closed()
-
-import asyncio
-
-
-
-class Impl(IrcImpl):
-   async def on_message(self, target, by, message):
-      print(target, by, message)
-      # do some shit like
-      if message == 'hack_a_gibson' and by == 'ZeroCool':
-         await self.rpc.send_message('#test', 'hacking gibson from RPC')
-      elif message.startswith('dieplz'):
-         await self.rpc.disconnect()
-
-
-async def main():
-   # endless loop to always try and connect
-   while True:
-      tcp = TcpClient('127.0.0.1', 12345, Impl())
-      await tcp.connect()
-      await tcp.read()
-
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
