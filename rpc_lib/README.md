@@ -25,7 +25,6 @@ class Impl(api.IrcImpl):
 async def main():
    # endless loop to always try and connect
    while True:
-      loop = asyncio.get_event_loop()
       tcp = api.TcpClient('127.0.0.1', 12345, Impl()) # use bots host ip
       await tcp.connect()
       await tcp.read()

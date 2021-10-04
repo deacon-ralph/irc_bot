@@ -40,8 +40,11 @@ class Plugin(plugin_api.LocalPlugin):
                 title = tag.get("content", None)
             if tag.get("itemprop", None) == "duration":
                 duration = tag.get("content", None)
-                dt = datetime.datetime.strptime(duration, 'PT%MM%SS')
-                duration = dt.strftime('%H:%M:%S')
+                try:
+                    dt = datetime.datetime.strptime(duration, 'PT%MM%SS')
+                    duration = dt.strftime('%H:%M:%S')
+                except ValueError:
+                    duration = duration.replace('PT', '')
 
         return title, duration
 
