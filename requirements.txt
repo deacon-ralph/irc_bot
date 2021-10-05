@@ -1,6 +1,7 @@
 aiohttp==3.7.4.post0
 beautifulsoup4==4.9.3
 discord.py==1.7.3
+isodate==0.6.0
 loguru==0.5.3
 lxml==4.6.3
 pydle==0.9.4

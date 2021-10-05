@@ -4,6 +4,7 @@ import re
 
 import bs4
 import aiohttp
+import isodate
 
 import colors
 import logger
@@ -41,8 +42,17 @@ class Plugin(plugin_api.LocalPlugin):
             if tag.get("itemprop", None) == "duration":
                 duration = tag.get("content", None)
                 try:
-                    dt = datetime.datetime.strptime(duration, 'PT%MM%SS')
-                    duration = dt.strftime('%H:%M:%S')
+                    ts = isodate.parse_duration(duration).total_seconds()
+                    dt = datetime.datetime(
+                        1, 1, 1
+                    ) + datetime.timedelta(seconds=ts)
+                    day = dt.day - 1
+                    hour = str(dt.hour).zfill(2)
+                    minute = str(dt.minute).zfill(2)
+                    second = str(dt.second).zfill(2)
+                    duration = f'{hour}:{minute}:{second}'
+                    if day > 0:
+                        duration = f'{day}:{duration}'
                 except ValueError:
                     duration = duration.replace('PT', '')
 
