@@ -60,9 +60,15 @@ class _DiscordClient(discord.Client):
 
             for relay in relay_settings:
                 if message.channel.id == relay['discord_channel']:
-                    await self.irc_client.message(
-                        relay['irc_channel'], f'<{formatted_name}>: {message.content}'
-                    )
+                    if message.content:
+                        await self.irc_client.message(
+                            relay['irc_channel'], f'<{formatted_name}>: {message.content}'
+                        )
+                    for attachment in message.attachments:
+                        await self.irc_client.message(
+                            relay['irc_channel'],
+                            f'<{formatted_name}>: {attachment}'
+                        )
 
 
 class Plugin(plugin_api.LocalPlugin):
