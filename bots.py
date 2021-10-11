@@ -20,13 +20,24 @@ class FamilyFriendlyChatBot(pydle.Client):
 
     @plugins.setter
     def plugins(self, plugins):
-        if self._plugins:  # call reload so we can clean things up
-            for _, plugin in self._plugins.items():
-                plugin.on_reload()
+        """sets the _plugins value
 
-        self._plugins = plugins  #
-        for _, plugin in plugins.items():
-            plugin.on_loaded(self)
+        :param dict plugins: dict of name, plugin instance
+        """
+        if self._plugins:
+            for name, plugin in self._plugins.items():
+                if name in plugins:  # if the name is in the new plugin list...
+                    plugin.on_reload()  # call on_reload to clean things up
+
+        if self._plugins:
+            # call update on the dict. this ensures we dont
+            # lose the already loaded plugins that arent being reloaded
+            self._plugins.update(plugins)
+        else:
+            self._plugins = plugins  # no plugins yet, set all of them
+
+        for name, plugin in plugins.items():
+            plugin.on_loaded(self)  # call on_loaded for the new instances
 
     @property
     def chatnet(self):
