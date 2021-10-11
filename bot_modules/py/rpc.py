@@ -169,8 +169,3 @@ class Plugin(plugin_api.LocalPlugin):
             )
             data = f'{constants.ON_MESSAGE}{json_data}'
             await self.write_to_client(writer, data)
-
-
-
-
-
