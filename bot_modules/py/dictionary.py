@@ -103,6 +103,6 @@ class Plugin(plugin_api.LocalPlugin):
 
     def help_msg(self):
         return {
-            'define': '.define <word> - wil show all definitions[FUCK CAN-SPAM]',
+            'define': '.define <word> - will show all definitions',
             'urban': '.ud <word> - will show first 2 urban definitions'
         }
