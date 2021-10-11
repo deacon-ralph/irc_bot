@@ -47,6 +47,7 @@ def _maybe_log(msg):
 
     proj_folder = pathlib.Path(__file__).parent.parent.parent.resolve()
     with open(f'{proj_folder}{os.path.sep}chatter.log', 'a') as f:
+        msg = msg.strip(' ')
         modified_sentence = msg[0].capitalize() + msg[1:]
         f.write(f'\n{modified_sentence}')
 
