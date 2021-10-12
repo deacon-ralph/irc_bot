@@ -40,4 +40,3 @@ class Plugin(plugin_api.LocalPlugin):
             'list': 'use ".plugins list" to list loaded plugins',
             'reload': 'use ".plugins reload" to reload all plugins'
         }
-

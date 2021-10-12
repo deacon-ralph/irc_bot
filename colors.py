@@ -48,4 +48,3 @@ def colorize(text, fg, bg=None):
 def strip_formatting(message):
     """Returns message stripped of all formatting"""
     return STRIP_REGEX.sub(message, '')
-

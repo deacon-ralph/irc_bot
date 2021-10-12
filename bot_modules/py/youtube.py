@@ -82,5 +82,3 @@ class Plugin(plugin_api.LocalPlugin):
                 pass
             except Exception:
                 _logger.exception('Failed to parse youtube link', exc_info=True)
-
-
