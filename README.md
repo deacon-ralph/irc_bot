@@ -47,7 +47,8 @@ License
     Copyright (C) 2021 NOOSCOPE IRC
 
     Everyone is permitted to copy and distribute verbatim or modified
-    copies of this license document.
+    copies of this license document. Nobody is liable for anything,
+    no promises are made about this software, and it is without warranty.
  
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
     TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
