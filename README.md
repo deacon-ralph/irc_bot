@@ -40,8 +40,8 @@ License
 =======
 ![name](WTFPL.jpg)
 
-    DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                   Version 2, December 2004
+    DO WHAT THE FUCK YOU WANT TO, INSHALLAH PUBLIC LICENSE
+                   Version 3, September 2021
  
     Copyright (C) 2021 NOOSCOPE IRC
 
@@ -52,4 +52,4 @@ License
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
     TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
-    0. You just DO WHAT THE FUCK YOU WANT TO.
+    0. You just DO WHAT THE FUCK YOU WANT TO, INSHALLAH!
