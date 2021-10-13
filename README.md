@@ -51,7 +51,7 @@ License
     You may use this software in any way for any reason except satanism or 
     abortions or divorces.
  
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+           DO WHAT THE FUCK EVER YOU WANT TO PUBLIC LICENSE
     TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
     0. You just DO WHAT THE FUCK YOU WANT TO, INSHALLAH!
