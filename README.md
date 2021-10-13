@@ -41,7 +41,7 @@ License
 ![name](WTFPL.jpg)
 
     DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                   Version 3.1, September 2021
+            Version 3.1, September 2021
     
     by Sam Hocevar <sam@hocevar.net>
     Copyright (C) 2021 NOOSCOPE IRC
