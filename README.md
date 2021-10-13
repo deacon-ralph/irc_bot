@@ -38,7 +38,7 @@ docker run --rm \
 
 License
 =======
-![name](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl-strip.jpg)
+![name](WTFPL.jpg)
 
     DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
