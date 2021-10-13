@@ -40,18 +40,18 @@ License
 =======
 ![name](WTFPL.jpg)
 
-    DO WHAT THE FUCK EVER YOU WANT TO PUBLIC LICENSE
-            Version 1.0, September 2021
+```
+        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+                    Version 2, December 2004 
 
-    Copyright (C) 2021 NOOSCOPE IRC
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
 
-    Everyone is permitted to copy and distribute verbatim or modified
-    copies of this license document. Nobody is liable for anything,
-    no promises are made about this software, and it is without warranty.
-    You may use this software in any way for any reason except satanism or 
-    abortions or divorces.
- 
-           DO WHAT THE FUCK EVER YOU WANT TO PUBLIC LICENSE
-    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ Everyone is permitted to copy and distribute verbatim or modified 
+ copies of this license document, and changing it is allowed as long 
+ as the name is changed. 
 
-    0. You just DO WHAT THE FUCK YOU WANT TO, INSHALLAH!
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+```
