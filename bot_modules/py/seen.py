@@ -1,6 +1,5 @@
+"""Seen module will keep track of users in memory"""
 import datetime
-import json
-import os.path as path
 
 import colors
 import logger
