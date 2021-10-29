@@ -146,3 +146,12 @@ class Plugin(plugin_api.LocalPlugin):
                 self.exec_proc(_shitpost, args)
             )
             await self.client.message(target, sentence)
+
+    async def on_join(self, channel, user):
+        await super().on_join(channel, user)
+        if not self.enabled:
+            return
+        sentence = await asyncio.ensure_future(
+            self.exec_proc(_shitpost, user)
+        )
+        await self.client.message(channel, sentence)

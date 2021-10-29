@@ -4,6 +4,7 @@ discord.py==1.7.3
 isodate==0.6.0
 loguru==0.5.3
 lxml==4.6.3
+numpy==1.21.3
 pydle==0.9.4
 requests==2.26.0
 scapy==2.4.5

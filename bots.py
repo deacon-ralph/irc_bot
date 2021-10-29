@@ -87,3 +87,9 @@ class FamilyFriendlyChatBot(pydle.Client):
             return
         for _, plugin in self.plugins.items():
             await plugin.on_nick_change(old, new)
+
+    async def on_join(self, channel, user):
+        if user == self.nickname:
+            return  # dont respond to ourself
+        for _, plugin in self.plugins.items():
+            await plugin.on_join(channel, user)

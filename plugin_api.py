@@ -145,3 +145,10 @@ class LocalPlugin(_Plugin):
         :param str old: old nick
         :param stre new: new nick
         """
+
+    async def on_join(self, channel, user):
+        """Called when user joins channel
+
+        :param str channel: the channel that was joined
+        :param str user: the user
+        """
