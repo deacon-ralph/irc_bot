@@ -152,8 +152,8 @@ class Plugin(plugin_api.LocalPlugin):
                         await discord_chan.send(f'**<{by}>**: {message}')
 
             # logging stuff
-            print('channels', self.discord_client.get_all_channels())
-            for guild in self.discord_client.guilds:
-                _logger.info(guild.name)
-                for channel in guild.text_channels:
-                    _logger.info(f'{channel}, {channel.name}, {channel.id}')
+            # print('channels', self.discord_client.get_all_channels())
+            # for guild in self.discord_client.guilds:
+            #     _logger.info(guild.name)
+            #     for channel in guild.text_channels:
+            #         _logger.info(f'{channel}, {channel.name}, {channel.id}')
