@@ -103,7 +103,7 @@ class Plugin(plugin_api.LocalPlugin):
         writer.write(data.encode('utf8'))
         try:
             await writer.drain()
-        except (ConnectionResetError, ConnectionError):
+        except (ConnectionResetError, ConnectionError, TimeoutError):
             _logger.error('connection closed')
 
     async def socket_recv(self, reader, writer):
