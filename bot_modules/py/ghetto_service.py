@@ -80,6 +80,7 @@ class Plugin(plugin_api.LocalPlugin):
                 for hostname in dj['hostnames']:
                     if hostname == whois_info['hostname']:
                         _logger.info('setting mode to +o for %s', user)
+                        await self.client.set_mode(channel, "-b", user)
                         await self.client.set_mode(channel, "+o", user)
 
         await super().on_join(channel, user)
