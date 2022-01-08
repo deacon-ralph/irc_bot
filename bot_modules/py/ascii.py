@@ -64,7 +64,7 @@ class Plugin(plugin_api.LocalPlugin):
         if message == '.ascii list':
             await self.client.message(
                 target,
-                ','.join(list(self._get_available_asciis().keys()))
+                ','.join(list(sorted(self._get_available_asciis().keys())))
             )
         elif message.startswith('.ascii'):
             art = message.replace('.ascii', '').strip()
