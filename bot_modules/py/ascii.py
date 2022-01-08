@@ -32,7 +32,7 @@ class Plugin(plugin_api.LocalPlugin):
         ascii_art_paths = {}
         for filename in filenames:
             key = filename.split(os.sep)[-1]
-            ascii_art_paths[key.rstrip('.txt')] = filename
+            ascii_art_paths[os.path.splitext(key)[0]] = filename
         return ascii_art_paths
 
     def _get_ascii(self, art_name):
