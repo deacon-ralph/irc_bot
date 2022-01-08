@@ -2,7 +2,9 @@
 import glob
 import os
 import pathlib
+import re
 
+import colors
 import logger
 import plugin_api
 
@@ -16,7 +18,8 @@ class Plugin(plugin_api.LocalPlugin):
     def help_msg(self):
         return {
             'ascii': '.ascii <art name>',
-            'list': '.ascii list will display available asciis'
+            'list': '.ascii list will display available asciis',
+            'search': '.ascii search <text> will list matching asciis'
         }
 
     @classmethod
@@ -57,6 +60,30 @@ class Plugin(plugin_api.LocalPlugin):
                 fixed_lines.append(fixed)
             return fixed_lines
 
+    def _search_ascii(self, search_word):
+        """Returns a string of ascii arts containing the searchg word
+
+        :param str search_word: search word
+
+        :returns: list of matched asciis
+        :rtype: str
+        """
+        matched = []
+        ascii_names = self._get_available_asciis().keys()
+        for name in ascii_names:
+            match = re.search(search_word, name, re.IGNORECASE)
+            if match:
+                insensitive_name = re.compile(
+                    re.escape(search_word),
+                    re.IGNORECASE
+                )
+                hl_name = insensitive_name.sub(
+                    colors.colorize(match.group(), fg=colors.RED),
+                    match.string
+                )
+                matched.append(hl_name)
+        return sorted(matched)
+
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
         if not self.enabled:
@@ -64,8 +91,23 @@ class Plugin(plugin_api.LocalPlugin):
         if message == '.ascii list':
             await self.client.message(
                 target,
-                ','.join(list(sorted(self._get_available_asciis().keys())))
+                ', '.join(list(sorted(self._get_available_asciis().keys())))
             )
+        elif message.startswith('.ascii search '):
+            search_word = message.replace('.ascii search ', '').strip()
+            matched = self._search_ascii(search_word)
+            if matched:
+                await self.client.message(
+                    target,
+                    f"{colors.colorize('found:', fg=colors.GREEN)} "
+                    f"{', '.join(matched)}"
+                )
+            else:
+                await self.client.message(
+                    target,
+                    f'no asciis found for '
+                    f'{colors.colorize(search_word, fg=colors.RED)}'
+                )
         elif message.startswith('.ascii'):
             art = message.replace('.ascii', '').strip()
 
