@@ -14,6 +14,9 @@ class Plugin(plugin_api.LocalPlugin):
 
     userdata = {}
 
+    def help_msg(self):
+        return '.seen <name>'
+
     def _get_last_seen(self, nick):
         """Returns last seen data for nick
 
@@ -62,11 +65,10 @@ class Plugin(plugin_api.LocalPlugin):
             'message': message
         }
 
-    def help_msg(self):
-        return '.seen <name>'
-
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
+        if not self.enabled:
+            return
         if message == '.seen reload':
             return
         elif message.startswith('.seen '):
