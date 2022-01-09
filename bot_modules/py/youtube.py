@@ -27,36 +27,37 @@ class Plugin(plugin_api.LocalPlugin):
         :param str link: the url
 
         :return: tuple of title, duration
-        :rtype: (str, str)
+        :rtype: (str, str, str)
         """
         async with aiohttp.ClientSession() as session:
             response = await session.get(link)
             html = await response.text()
 
         soup = bs4.BeautifulSoup(html, features='lxml')
-        title = None
-        duration = None
-        for tag in soup.find_all("meta"):
-            if tag.get("property", None) == "og:title":
-                title = tag.get("content", None)
-            if tag.get("itemprop", None) == "duration":
-                duration = tag.get("content", None)
-                try:
-                    ts = isodate.parse_duration(duration).total_seconds()
-                    dt = datetime.datetime(
-                        1, 1, 1
-                    ) + datetime.timedelta(seconds=ts)
-                    day = dt.day - 1
-                    hour = str(dt.hour).zfill(2)
-                    minute = str(dt.minute).zfill(2)
-                    second = str(dt.second).zfill(2)
-                    duration = f'{hour}:{minute}:{second}'
-                    if day > 0:
-                        duration = f'{day}:{duration}'
-                except ValueError:
-                    duration = duration.replace('PT', '')
 
-        return title, duration
+        span_tag = soup.find("span", itemprop='author')
+        link_tag = span_tag.find('link', itemprop='name')
+        author = link_tag.get("content", None)
+
+        title = soup.find("meta", property="og:title").get("content", None)
+        duration = soup.find("meta", itemprop="duration").get("content", None)
+
+        try:
+            ts = isodate.parse_duration(duration).total_seconds()
+            dt = datetime.datetime(
+                1, 1, 1
+            ) + datetime.timedelta(seconds=ts)
+            day = dt.day - 1
+            hour = str(dt.hour).zfill(2)
+            minute = str(dt.minute).zfill(2)
+            second = str(dt.second).zfill(2)
+            duration = f'{hour}:{minute}:{second}'
+            if day > 0:
+                duration = f'{day}:{duration}'
+        except ValueError:
+            duration = duration.replace('PT', '')
+
+        return title, author, duration
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
@@ -69,9 +70,9 @@ class Plugin(plugin_api.LocalPlugin):
                     message
                 ).group("url")
                 if 'youtube' in url or 'youtu.be' in url:
-                    title, duration = await self._parse_youtube(url)
+                    title, author, duration = await self._parse_youtube(url)
                     play_btn = colors.colorize(' ▶ ', fg=colors.SILVER, bg=colors.RED)
-                    title = ' ' + title + ' '  # add padding
+                    title = ' ' + title + f' | {author}' + ' '  # add padding
                     title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
                     duration = colors.colorize(f'[{duration}]', fg=colors.BLACK, bg=colors.SILVER)
                     await self.client.message(
