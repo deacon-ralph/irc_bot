@@ -1,5 +1,6 @@
 .vagrant
 *.log
+admins.toml
 config.toml
 **/bot_modules/**
 ascii_art/**

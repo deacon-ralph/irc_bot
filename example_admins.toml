@@ -1,0 +1,16 @@
+[[admins]]
+nick = "your_handle"
+owner = true
+hostnames = [
+  "127.0.0.1",
+  "localhost",
+  "164bc6a9.irc.notgay.men",
+]
+
+[[admins]]
+nick = "your_friend"
+owner = false
+hostnames = [
+  "192.169.1.2",
+]
+

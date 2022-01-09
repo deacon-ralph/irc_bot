@@ -1,59 +1,12 @@
 """ghetto service"""
 
 import logger
+
+import common
 import plugin_api
 
-_logger = logger.LOGGER
 
-APPROVED_DJS = [
-    {
-        'nick': 'ralph',
-        'hostnames': [
-            'a3c01d64.irc.notgay.men',
-            'run.data.UnixMaster.org',
-            '164bc6a9.irc.notgay.men',
-            '206.41.117.46',
-            '206.41.117.47'
-        ]
-    },
-    {
-        'nick': 'ralph_',
-        'hostnames': [
-            'a3c01d64.irc.notgay.men',
-            'run.data.UnixMaster.org',
-            '164bc6a9.irc.notgay.men',
-            '206.41.117.46',
-            '206.41.117.47'
-        ]
-    },
-    {
-        'nick': 'cumdata',
-        'hostnames': [
-            'a3c01d64.irc.notgay.men',
-            'run.data.UnixMaster.org',
-            '164bc6a9.irc.notgay.men',
-            '206.41.117.46',
-            '206.41.117.47'
-        ]
-    },
-    {
-        'nick': 'cumdata_',
-        'hostnames': [
-            'a3c01d64.irc.notgay.men',
-            'run.data.UnixMaster.org',
-            '164bc6a9.irc.notgay.men',
-            '206.41.117.46',
-            '206.41.117.47'
-        ]
-    },
-    {
-        'nick': 'Lions',
-        'hostnames': [
-            'id-228252.hampstead.irccloud.com',
-            'e43a9c7a.irc.notgay.men'
-        ]
-    }
-]
+_logger = logger.LOGGER
 
 
 class Plugin(plugin_api.LocalPlugin):
@@ -75,7 +28,8 @@ class Plugin(plugin_api.LocalPlugin):
             '%s joined %s with hostname %s',
             user, channel, whois_info['hostname']
         )
-        for dj in APPROVED_DJS:
+        admin_conf = common.parse_admin_config()
+        for dj in admin_conf.get('admins'):
             if dj['nick'] == user:
                 for hostname in dj['hostnames']:
                     if hostname == whois_info['hostname']:

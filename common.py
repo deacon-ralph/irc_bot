@@ -105,4 +105,18 @@ def parse_config():
         exit(1)
 
 
+def parse_admin_config():
+    """Returns admin config as a dict
+
+    :returns: admin config
+    :rtype: dict
+    """
+    directory = pathlib.Path(__file__).parent.resolve()
+    try:
+        return toml.load(directory.joinpath('admins.toml'))
+    except FileNotFoundError:
+        _logger.error('Missing admins.toml file in project dir')
+        return {'admins': []}
+
+
 CONFIG = parse_config()

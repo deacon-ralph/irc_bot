@@ -29,6 +29,7 @@ __pycache__/
 *.so
 
 # dont include the real config
+admins.toml
 config.toml
 junk.json
 certs/selfsigned.key
