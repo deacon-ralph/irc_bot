@@ -111,7 +111,7 @@ class Plugin(plugin_api.LocalPlugin):
             await writer.drain()
         except (ConnectionResetError, ConnectionError, TimeoutError):
             _logger.error('connection closed')
-            await self._close_and_remove_writer()
+            await self._close_and_remove_writer(writer)
 
     async def socket_recv(self, reader, writer):
         """Acts as a callback to handle tcp connections
@@ -152,7 +152,7 @@ class Plugin(plugin_api.LocalPlugin):
                 break
 
         _logger.info(f'LOOP WAS BROKEN: {data}')
-        await self._close_and_remove_writer()
+        await self._close_and_remove_writer(writer)
 
     async def socket_listen(self):
         """Starts a socket server"""
