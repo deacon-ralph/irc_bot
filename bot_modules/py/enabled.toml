@@ -8,5 +8,5 @@ ircart = true
 ascii = true
 discord_relay = true
 rsock = true
-rpc = false
+rpc = true
 seen = true
