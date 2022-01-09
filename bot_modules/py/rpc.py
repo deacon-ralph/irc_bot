@@ -93,6 +93,12 @@ class Plugin(plugin_api.LocalPlugin):
                 msg_data.get('message')
             )
 
+    async def _close_and_remove_writer(self, writer):
+        if writer in self.writers:
+            self.writers.remove(writer)
+        writer.close()
+        await writer.wait_closed()
+
     async def write_to_client(self, writer, data):
         """Writes data to socket and drains writer
 
@@ -105,6 +111,7 @@ class Plugin(plugin_api.LocalPlugin):
             await writer.drain()
         except (ConnectionResetError, ConnectionError, TimeoutError):
             _logger.error('connection closed')
+            await self._close_and_remove_writer()
 
     async def socket_recv(self, reader, writer):
         """Acts as a callback to handle tcp connections
@@ -145,9 +152,7 @@ class Plugin(plugin_api.LocalPlugin):
                 break
 
         _logger.info(f'LOOP WAS BROKEN: {data}')
-        self.writers.remove(writer)
-        writer.close()
-        await writer.wait_closed()
+        await self._close_and_remove_writer()
 
     async def socket_listen(self):
         """Starts a socket server"""
