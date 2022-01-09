@@ -126,6 +126,8 @@ def _generate_sentence(d, seed_word):
 class Plugin(plugin_api.LocalPlugin):
     """Markov plugin"""
 
+    _join_seen = set()
+
     def help_msg(self):
         return ".markov <optional arg> to generate random sentence"
 
@@ -151,7 +153,10 @@ class Plugin(plugin_api.LocalPlugin):
         await super().on_join(channel, user)
         if not self.enabled:
             return
+        if user in self._join_seen:
+            return
         sentence = await asyncio.ensure_future(
             self.exec_proc(_shitpost, user)
         )
+        self._join_seen.add(user)
         await self.client.message(channel, sentence)
