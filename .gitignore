@@ -31,5 +31,6 @@ __pycache__/
 # dont include the real config
 admins.toml
 config.toml
+bot_modules/py/**/enabled.toml
 junk.json
 certs/selfsigned.key
