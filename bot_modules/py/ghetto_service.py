@@ -49,6 +49,10 @@ class Plugin(plugin_api.LocalPlugin):
             target,
             '🚨 SETTING DEFCON LEVEL 2: Shits going south 🚨'
         )
+        await self.client.message(
+            target,
+            ' '.join(self.client.channels[target]['users'])
+        )
 
     async def _defcon_3(self, target):
         """Sets channel to invite, only voiced users, and devoices users
@@ -61,6 +65,10 @@ class Plugin(plugin_api.LocalPlugin):
         await self.client.message(
             target,
             '🚨 SETTING DEFCON LEVEL 3: Prepare for battle 🚨'
+        )
+        await self.client.message(
+            target,
+            ' '.join(self.client.channels[target]['users'])
         )
 
     async def _defcon_4(self, target):
@@ -88,6 +96,10 @@ class Plugin(plugin_api.LocalPlugin):
                 user,
                 reason='Terminal Lost'
             )
+        await self.client.message(
+            target,
+            ' '.join(self.client.channels[target]['users'])
+        )
 
     async def on_message(self, target, by, message):
         if message.startswith('.defcon '):
