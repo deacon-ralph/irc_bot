@@ -1,4 +1,10 @@
-"""ghetto service"""
+"""ghetto service
+
+This service handles
+    1. joining channels on invite by bot admin
+    2. defcon mode
+    3. auto opping bot admins
+"""
 import asyncio
 
 import logger
@@ -11,7 +17,7 @@ _logger = logger.LOGGER
 
 
 class Plugin(plugin_api.LocalPlugin):
-    """irc art plugin"""
+    """Ghetto service plugin"""
 
     @property
     def enabled(self):
@@ -102,6 +108,9 @@ class Plugin(plugin_api.LocalPlugin):
         )
 
     async def on_message(self, target, by, message):
+        await super().on_message(target, by, message)
+        if not self.enabled:
+            return
         if message.startswith('.defcon '):
             if await common.is_user_admin(self.client, by):
                 level = message.replace('.defcon ', '').strip()
@@ -120,11 +129,9 @@ class Plugin(plugin_api.LocalPlugin):
                     await self._defcon_4(target)
 
     async def on_join(self, channel, user):
-        whois_info = await self.client.whois(user)
-        _logger.info(
-            '%s joined %s with hostname %s',
-            user, channel, whois_info['hostname']
-        )
+        await super().on_join(channel, user)
+        if not self.enabled:
+            return
         if await common.is_user_admin(self.client, user):
             _logger.info('setting mode to +o for %s', user)
             await self.client.set_mode(channel, '-b', user)
@@ -134,6 +141,8 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_kick(self, channel, target, by, reason=None):
         await super().on_kick(channel, target, by, reason)
+        if not self.enabled:
+            return
         if await common.is_user_admin(self.client, target):
             await self._defcon_2(channel)
             # make sure we dont kick a bot admin who kicked another admin
@@ -141,5 +150,14 @@ class Plugin(plugin_api.LocalPlugin):
                 # wasnt a bot admin, give em the boot
                 await self.client.kick(channel, by, reason='Lost Terminal')
             await self.client.rawmsg('INVITE', target, channel)
+
+    async def on_invite(self, channel, by):
+        await super().on_invite(channel, by)
+        if not self.enabled:
+            return
+        if await common.is_user_admin(self.client, by):
+            self.client.join(channel)
+
+
 
 

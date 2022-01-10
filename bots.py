@@ -94,6 +94,7 @@ class FamilyFriendlyChatBot(pydle.Client):
         :param str channel: the channel
         :param str user: the user
         """
+        _logger.info(f'{channel} {user}')
         if user == self.nickname:
             return  # dont respond to ourself
         for _, plugin in self.plugins.items():
@@ -107,6 +108,17 @@ class FamilyFriendlyChatBot(pydle.Client):
         :param str by: who kicked the target
         :param str reason: reason for kick
         """
+        _logger.info(f'{channel} {target} {by} {reason}')
         for _, plugin in self.plugins.items():
             await plugin.on_kick(channel, target, by, reason)
+
+    async def on_invite(self, channel, by):
+        """Callback called when client was invited into a channel by someone.
+
+        :param str channel: the channel
+        :param str by: the user who invited
+        """
+        _logger.info(f'{channel} {by}')
+        for _, plugin in self.plugins.items():
+            await plugin.on_invite(channel, by)
 

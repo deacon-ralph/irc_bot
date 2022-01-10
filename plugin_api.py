@@ -186,3 +186,10 @@ class LocalPlugin(_Plugin):
         :param str channel: the channel that was joined
         :param str user: the user
         """
+
+    async def on_invite(self, channel, by):
+        """Callback called when client was invited into a channel by someone.
+
+        :param str channel: the channel
+        :param str by: the user who invited
+        """
