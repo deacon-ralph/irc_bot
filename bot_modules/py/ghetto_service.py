@@ -123,7 +123,12 @@ class Plugin(plugin_api.LocalPlugin):
     async def on_kick(self, channel, target, by, reason=None):
         await super().on_kick(channel, target, by, reason)
         if await common.is_user_admin(self.client, target):
-            await self.client.kick(channel, by, reason='Lost Terminal')
-            await self._defcon_1(channel)
+            print('would set defcon and kick here', channel, target, by, reason)
+            await self._defcon_2(channel)
+            # make sure we dont kick a bot admin who kicked another admin
+            if not await common.is_user_admin(self.client, by):
+                # wasnt a bot admin, give em the boot
+                await self.client.kick(channel, by, reason='Lost Terminal')
+            await self.client.rawmsg('INVITE', target, channel)
 
 
