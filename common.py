@@ -12,28 +12,41 @@ import toml
 _logger = logger.LOGGER
 
 
-def _get_enabled_py_conf():
+def _get_enabled_py_conf(chatnet):
     """Returns enabled conf as dict
 
     :rtype: dict
     """
     proj_folder = pathlib.Path(__file__).parent.resolve()
     py_modules = proj_folder.joinpath('bot_modules', 'py')
-    enabled_conf = toml.load(f'{py_modules}{os.path.sep}enabled.toml')
-    return enabled_conf
+    enable_conf = f'{py_modules}{os.path.sep}{chatnet}{os.path.sep}enabled.toml'
+    try:
+        return toml.load(
+            f'{py_modules}{os.path.sep}{chatnet}{os.path.sep}enabled.toml'
+        )
+    except FileNotFoundError:
+        directory = os.path.dirname(enable_conf)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        pathlib.Path(enable_conf).touch()
+        return {}
 
 
-def update_enabled_py_conf(name, enabled):
+def update_enabled_py_conf(chatnet, name, enabled):
     """Updates enabled conf and writes to disk
 
+    :param str chatnet: the clients chatnet
     :param str name: name of the plugin
     :param bool enabled: is enabled?
     """
     proj_folder = pathlib.Path(__file__).parent.resolve()
     py_modules = proj_folder.joinpath('bot_modules', 'py')
-    enabled_conf = toml.load(f'{py_modules}{os.path.sep}enabled.toml')
+    conf_path = f'{py_modules}{os.path.sep}{chatnet}{os.path.sep}enabled.toml'
+    enabled_conf = toml.load(
+        conf_path
+    )
     enabled_conf[name] = enabled
-    with open(f'{py_modules}{os.path.sep}enabled.toml', 'w+') as f:
+    with open(conf_path, 'w+') as f:
         toml.dump(enabled_conf, f)
 
 
@@ -52,12 +65,13 @@ def _get_plugin_names():
     return [p.split(f'{py_modules}{os.path.sep}')[1].replace('.py', '') for p in plugins]
 
 
-def load_py_plugins(name=None, reload=False):
+def load_py_plugins(chatnet, name=None, reload=False):
     """Returns dict of initialized plugin objects
 
     If name is supplied, only that plugin will be reloaded
     If reload is Ture, plugins will be reloaded
 
+    :param str chatnet: clients chatnet
     :param str name: name of the plugin
     :param bool reload: should reload?
 
@@ -68,7 +82,7 @@ def load_py_plugins(name=None, reload=False):
     plugins = _get_plugin_names()
     if name:
         plugins = [name]
-    enabled_conf = _get_enabled_py_conf()
+    enabled_conf = _get_enabled_py_conf(chatnet)
     for plugin in plugins:
         module = importlib.import_module(f'bot_modules.py.{plugin}')
         if reload:
@@ -118,5 +132,23 @@ def parse_admin_config():
         _logger.error('Missing admins.toml file in project dir')
         return {'admins': []}
 
+
+async def is_user_admin(client, user):
+    """Returns if user is listed as admin in settings
+
+    :param FamilyFriendlyChatBot client: irc client
+    :param str user: users nick
+
+    :returns: True if user is admin
+    :rtype: bool
+    """
+    whois_info = await client.whois(user)
+    admin_conf = parse_admin_config()
+    for dj in admin_conf.get('admins'):
+        if dj['nick'] == user:
+            for hostname in dj['hostnames']:
+                if hostname == whois_info['hostname']:
+                    return True
+    return False
 
 CONFIG = parse_config()

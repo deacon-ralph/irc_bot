@@ -58,7 +58,7 @@ class FamilyFriendlyChatBot(pydle.Client):
 
         will do initial loading of enabled plugins
         """
-        self.plugins = common.load_py_plugins()
+        self.plugins = common.load_py_plugins(self.chatnet)
 
         for chan in self._channels:
             await self.join(chan.name, chan.password)
@@ -89,7 +89,24 @@ class FamilyFriendlyChatBot(pydle.Client):
             await plugin.on_nick_change(old, new)
 
     async def on_join(self, channel, user):
+        """Called when user joins a channel
+
+        :param str channel: the channel
+        :param str user: the user
+        """
         if user == self.nickname:
             return  # dont respond to ourself
         for _, plugin in self.plugins.items():
             await plugin.on_join(channel, user)
+
+    async def on_kick(self, channel, target, by, reason=None):
+        """Called on kick; may be self or other user
+
+        :param str channel: channel
+        :param str target: who was kicked
+        :param str by: who kicked the target
+        :param str reason: reason for kick
+        """
+        for _, plugin in self.plugins.items():
+            await plugin.on_kick(channel, target, by, reason)
+

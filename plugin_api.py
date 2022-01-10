@@ -7,10 +7,14 @@ import pydle
 
 import colors
 import common
+import logger
 
 
 _PROC_EXECUTOR = concurrent_futures.ProcessPoolExecutor()
 _THREAD_EXECUTOR = concurrent_futures.ThreadPoolExecutor()
+
+
+_logger = logger.LOGGER
 
 
 class _Plugin(abc.ABC):
@@ -117,27 +121,57 @@ class LocalPlugin(_Plugin):
     async def on_message(self, target, by, message):
         """called on message from user or channel"""
         if message == f'.{self.name} enable':
+            if not await common.is_user_admin(self.client, by):
+                _logger.info('%s is not an admin, cant enable plugin')
+                return
             self._enabled = True
-            common.update_enabled_py_conf(self.name, self.enabled)
+            common.update_enabled_py_conf(
+                self.client.chatnet,
+                self.name,
+                self.enabled
+            )
             await self.client.message(
                 target,
                 f'🔌 {self.name} '
                 f'{colors.colorize("E N A B L E D", fg=colors.GREEN)}'
             )
         elif message == f'.{self.name} disable':
+            if not await common.is_user_admin(self.client, by):
+                _logger.info('%s is not an admin, cant disable plugin')
+                return
             self._enabled = False
-            common.update_enabled_py_conf(self.name, self.enabled)
+            common.update_enabled_py_conf(
+                self.client.chatnet,
+                self.name,
+                self.enabled
+            )
             await self.client.message(
                 target,
                 f'🔌 {self.name} '
                 f'{colors.colorize("D I S A B L E D", fg=colors.RED)}'
             )
         elif message == f'.{self.name} reload':
-            self.client.plugins = common.load_py_plugins(self.name, True)
+            if not await common.is_user_admin(self.client, by):
+                _logger.info('%s is not an admin, cant reloade plugin')
+                return
+            self.client.plugins = common.load_py_plugins(
+                self.client.chatnet,
+                self.name,
+                True
+            )
             await self.client.message(
                 target,
                 f'🔌 {self.name} {colors.BOLD}R E L O A D E D{colors.BOLD}'
             )
+
+    async def on_kick(self, channel, target, by, reason=None):
+        """Called when a user, possibly the client, was kicked from a channel.
+
+        :param str channel: the channel
+        :param str target: the user being kicked
+        :param str by: who done it
+        :param str reason: reason
+        """
 
     async def on_nick_change(self, old, new):
         """Called on nick change
