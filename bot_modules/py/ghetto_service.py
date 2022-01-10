@@ -123,7 +123,6 @@ class Plugin(plugin_api.LocalPlugin):
     async def on_kick(self, channel, target, by, reason=None):
         await super().on_kick(channel, target, by, reason)
         if await common.is_user_admin(self.client, target):
-            print('would set defcon and kick here', channel, target, by, reason)
             await self._defcon_2(channel)
             # make sure we dont kick a bot admin who kicked another admin
             if not await common.is_user_admin(self.client, by):
