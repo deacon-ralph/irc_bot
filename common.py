@@ -126,12 +126,8 @@ def parse_admin_config():
     :rtype: dict
     """
     directory = pathlib.Path(__file__).parent.resolve()
-    print(directory)
     try:
-        print(directory.joinpath('admins.toml'))
-        admin_data = toml.load(directory.joinpath('admins.toml'))
-        print('admin data is:', admin_data)
-        return admin_data
+        return toml.load(directory.joinpath('admins.toml'))
     except FileNotFoundError:
         _logger.error('Missing admins.toml file in project dir')
         return {'admins': []}
@@ -148,7 +144,6 @@ async def is_user_admin(client, user):
     """
     whois_info = await client.whois(user)
     admin_conf = parse_admin_config()
-    print(admin_conf, admin_conf.get('admins'))
     for dj in admin_conf.get('admins'):
         if dj['nick'] == user:
             for hostname in dj['hostnames']:
