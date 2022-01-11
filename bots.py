@@ -122,3 +122,4 @@ class FamilyFriendlyChatBot(pydle.Client):
         for _, plugin in self.plugins.items():
             await plugin.on_invite(channel, by)
 
+

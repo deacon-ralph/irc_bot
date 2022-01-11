@@ -156,7 +156,8 @@ class Plugin(plugin_api.LocalPlugin):
         if not self.enabled:
             return
         if await common.is_user_admin(self.client, by):
-            self.client.join(channel)
+            await self.client.join(channel)
+
 
 
 
