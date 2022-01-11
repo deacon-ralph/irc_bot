@@ -33,7 +33,7 @@ class Plugin(plugin_api.LocalPlugin):
                 ', '.join(sorted(plugin_list))
             )
         if message == '.plugins reload':
-            if not await common.is_user_admin(self.client, by):
+            if not await common.is_user_admin_whois(self.client, by):
                 _logger.info('%s is not an admin, cant reload plugins')
                 return
             self.client.plugins = common.load_py_plugins(

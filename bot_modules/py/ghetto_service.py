@@ -158,7 +158,21 @@ class Plugin(plugin_api.LocalPlugin):
         if await common.is_user_admin(self.client, by):
             await self.client.join(channel)
 
+    async def on_mode_change(self, channel, modes, by):
+        await super().on_mode_change(channel, modes, by)
+        if await common.is_user_admin(self.client, by):
+            _logger.info('mode changed by bot admin')
+            return
+        current_modes = self.client.channels[channel]['modes']
+        o = current_modes.get('o')
+        s = current_modes.get('a')
+        q = current_modes.get('q')
 
-
+        affected_users = modes[1:]
+        for user in affected_users:
+            if await common.is_user_admin(self.client, user):
+                if not any(user in mode for mode in [o, s, q]):
+                    await self._defcon_2(channel)
+                    await self.client.kick(channel, by, reason='Lost Terminal')
 
 

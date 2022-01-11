@@ -121,7 +121,7 @@ class LocalPlugin(_Plugin):
     async def on_message(self, target, by, message):
         """called on message from user or channel"""
         if message == f'.{self.name} enable':
-            if not await common.is_user_admin(self.client, by):
+            if not await common.is_user_admin_whois(self.client, by):
                 _logger.info('%s is not an admin, cant enable plugin')
                 return
             self._enabled = True
@@ -136,7 +136,7 @@ class LocalPlugin(_Plugin):
                 f'{colors.colorize("E N A B L E D", fg=colors.GREEN)}'
             )
         elif message == f'.{self.name} disable':
-            if not await common.is_user_admin(self.client, by):
+            if not await common.is_user_admin_whois(self.client, by):
                 _logger.info('%s is not an admin, cant disable plugin')
                 return
             self._enabled = False
@@ -151,7 +151,7 @@ class LocalPlugin(_Plugin):
                 f'{colors.colorize("D I S A B L E D", fg=colors.RED)}'
             )
         elif message == f'.{self.name} reload':
-            if not await common.is_user_admin(self.client, by):
+            if not await common.is_user_admin_whois(self.client, by):
                 _logger.info('%s is not an admin, cant reloade plugin')
                 return
             self.client.plugins = common.load_py_plugins(
@@ -192,4 +192,13 @@ class LocalPlugin(_Plugin):
 
         :param str channel: the channel
         :param str by: the user who invited
+        """
+
+    async def on_mode_change(self, channel, modes, by):
+        """Called when the mode on a channel was changed.
+
+        :param str channel: channel
+        :param list modes: list of modes and nicks
+            ex: ['-oo', 'user1', 'user2']
+        :param str by: user who set the mode
         """
