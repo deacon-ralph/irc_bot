@@ -160,12 +160,12 @@ class Plugin(plugin_api.LocalPlugin):
 
         current_modes = self.client.channels[channel]['modes']
         o = current_modes.get('o', [])
-        s = current_modes.get('a', [])
+        a = current_modes.get('a', [])
         q = current_modes.get('q', [])
 
         affected_users = modes[1:]
         for user in affected_users:
             if await common.is_user_admin(self.client, user):
-                if not any(user in mode for mode in [o, s, q]):
+                if not any(user in mode for mode in [o, a, q]):
                     await self._defcon_2(channel)
                     await self.client.kick(channel, by, reason='Lost Terminal')
