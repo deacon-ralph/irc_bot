@@ -159,9 +159,9 @@ class Plugin(plugin_api.LocalPlugin):
             return
 
         current_modes = self.client.channels[channel]['modes']
-        o = current_modes.get('o')
-        s = current_modes.get('a')
-        q = current_modes.get('q')
+        o = current_modes.get('o', [])
+        s = current_modes.get('a', [])
+        q = current_modes.get('q', [])
 
         affected_users = modes[1:]
         for user in affected_users:
