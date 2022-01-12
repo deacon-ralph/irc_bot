@@ -109,29 +109,27 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
-        if not self.enabled:
-            return
         if message.startswith('.defcon '):
-            if await common.is_user_admin(self.client, by):
-                level = message.replace('.defcon ', '').strip()
-                try:
-                    level = int(level)
-                except (ValueError, TypeError):
-                    _logger.warning('Invalid defcon level')
-                    return
-                if level == 1:
-                    await self._defcon_1(target)
-                elif level == 2:
-                    await self._defcon_2(target)
-                elif level == 3:
-                    await self._defcon_3(target)
-                elif level == 4:
-                    await self._defcon_4(target)
+            if not await common.is_user_admin(self.client, by):
+                return
+
+            level = message.replace('.defcon ', '').strip()
+            try:
+                level = int(level)
+            except (ValueError, TypeError):
+                _logger.warning('Invalid defcon level')
+                return
+            if level == 1:
+                await self._defcon_1(target)
+            elif level == 2:
+                await self._defcon_2(target)
+            elif level == 3:
+                await self._defcon_3(target)
+            elif level == 4:
+                await self._defcon_4(target)
 
     async def on_join(self, channel, user):
         await super().on_join(channel, user)
-        if not self.enabled:
-            return
         if await common.is_user_admin(self.client, user):
             _logger.info('setting mode to +o for %s', user)
             await self.client.set_mode(channel, '-b', user)
@@ -141,8 +139,6 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_kick(self, channel, target, by, reason=None):
         await super().on_kick(channel, target, by, reason)
-        if not self.enabled:
-            return
         if await common.is_user_admin(self.client, target):
             await self._defcon_2(channel)
             # make sure we dont kick a bot admin who kicked another admin
@@ -153,8 +149,6 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_invite(self, channel, by):
         await super().on_invite(channel, by)
-        if not self.enabled:
-            return
         if await common.is_user_admin(self.client, by):
             await self.client.join(channel)
 
@@ -163,6 +157,7 @@ class Plugin(plugin_api.LocalPlugin):
         if await common.is_user_admin(self.client, by):
             _logger.info('mode changed by bot admin')
             return
+
         current_modes = self.client.channels[channel]['modes']
         o = current_modes.get('o')
         s = current_modes.get('a')

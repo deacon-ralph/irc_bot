@@ -161,7 +161,6 @@ async def is_user_admin(client, user):
     :returns: True if user is admin
     :rtype: bool
     """
-    print(client.users)
     whois_info = client.users.get(user)
     admin_conf = parse_admin_config()
     for dj in admin_conf.get('admins'):
