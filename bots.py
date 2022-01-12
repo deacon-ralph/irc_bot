@@ -73,6 +73,8 @@ class FamilyFriendlyChatBot(pydle.Client):
         _logger.info(f'{target} {by} {message}')
         if by == self.nickname:
             return  # dont respond to ourself
+        if not self.plugins:
+            return
         for _, plugin in self.plugins.items():
             await plugin.on_message(target, by, message)
 

@@ -51,6 +51,7 @@ if __name__ == '__main__':
                     client,
                     settings['uri'],
                     settings['port'],
+                    password=settings.get('password'),
                     tls=settings['use_tls'],
                     tls_verify=settings['tls_verify']
                 )
