@@ -169,5 +169,3 @@ class Plugin(plugin_api.LocalPlugin):
                 if not any(user in mode for mode in [o, s, q]):
                     await self._defcon_2(channel)
                     await self.client.kick(channel, by, reason='Lost Terminal')
-
-
