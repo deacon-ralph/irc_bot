@@ -122,4 +122,14 @@ class FamilyFriendlyChatBot(pydle.Client):
         for _, plugin in self.plugins.items():
             await plugin.on_invite(channel, by)
 
+    async def on_mode_change(self, channel, modes, by):
+        """Called when the mode on a channel was changed.
 
+        :param str channel: channel
+        :param list modes: list of modes and nicks
+            ex: ['-oo', 'user1', 'user2']
+        :param str by: user who set the mode
+        """
+        _logger.info(f'{channel} {modes} {by}')
+        for _, plugin in self.plugins.items():
+            await plugin.on_mode_change(channel, modes, by)

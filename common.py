@@ -133,8 +133,8 @@ def parse_admin_config():
         return {'admins': []}
 
 
-async def is_user_admin(client, user):
-    """Returns if user is listed as admin in settings
+async def is_user_admin_whois(client, user):
+    """Returns if user is listed as admin in settings and does whois lookup
 
     :param FamilyFriendlyChatBot client: irc client
     :param str user: users nick
@@ -150,5 +150,25 @@ async def is_user_admin(client, user):
                 if hostname == whois_info['hostname']:
                     return True
     return False
+
+
+async def is_user_admin(client, user):
+    """Returns if user is listed as admin in settings
+
+    :param FamilyFriendlyChatBot client: irc client
+    :param str user: users nick
+
+    :returns: True if user is admin
+    :rtype: bool
+    """
+    whois_info = client.users.get(user)
+    admin_conf = parse_admin_config()
+    for dj in admin_conf.get('admins'):
+        if dj['nick'] == user:
+            for hostname in dj['hostnames']:
+                if hostname == whois_info['hostname']:
+                    return True
+    return False
+
 
 CONFIG = parse_config()
