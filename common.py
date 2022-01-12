@@ -113,7 +113,7 @@ def parse_config():
         return toml.load(directory.joinpath('config.toml'))
     except FileNotFoundError:
         _logger.error(
-            'create config.toml in irc_bot/ directory. see example_conf.toml',
+            f'create config.toml in {directory} directory. see example_conf.toml',
             exc_info=False
         )
         exit(1)
