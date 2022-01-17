@@ -17,7 +17,7 @@ class Plugin(plugin_api.LocalPlugin):
 
     def help_msg(self):
         return {
-            'trolldb': '.trolldb <optional words>',
+            'troll': '.troll <optional words>',
         }
 
     @classmethod
@@ -71,8 +71,8 @@ class Plugin(plugin_api.LocalPlugin):
         await super().on_message(target, by, message)
         if not self.enabled:
             return
-        if message.startswith('.trolldb'):
-            phrase = message.replace('.trolldb', '').strip()
+        if message.startswith('.troll'):
+            phrase = message.replace('.troll', '').strip()
             troll = await self._get_troll(phrase)
             if troll:
                 await self.client.message(
