@@ -1,5 +1,7 @@
 """Seen module will keep track of users in memory"""
 import datetime
+import json
+import pathlib
 
 import colors
 import logger
@@ -16,6 +18,33 @@ class Plugin(plugin_api.LocalPlugin):
 
     def help_msg(self):
         return '.seen <name>'
+
+    def on_loaded(self, client):
+        super().on_loaded(client)
+        seen_data_path = self._get_seen_data_path()
+        with open(seen_data_path, 'r') as f:
+            self.userdata = json.loads(f.read())
+
+    def _get_seen_data_path(self):
+        """Returns seen data json file path
+
+        :returns: seen data
+        :rtype: pathlib.Path
+        """
+        py_folder = pathlib.Path(__file__).parent.resolve()
+        chatnet_folder = py_folder.joinpath(self.client.chatnet)
+        seen_data_path = chatnet_folder.joinpath('seen_data.json')
+        if not seen_data_path.exists():
+            seen_data_path.touch()
+            with open(seen_data_path, 'w+') as f:
+                f.write(json.dumps(self.userdata))
+        return seen_data_path
+
+    def _update_data_on_disk(self):
+        """Updates data on disk"""
+        seen_data_path = self._get_seen_data_path()
+        with open(seen_data_path, 'w+') as f:
+            f.write(json.dumps(self.userdata))
 
     def _get_last_seen(self, nick):
         """Returns last seen data for nick
@@ -64,6 +93,7 @@ class Plugin(plugin_api.LocalPlugin):
             'datetime': datetime.datetime.utcnow().timestamp(),
             'message': message
         }
+        self._update_data_on_disk()
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
