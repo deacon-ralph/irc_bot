@@ -13,6 +13,7 @@ class FamilyFriendlyChatBot(pydle.Client):
     _plugins = None
     _chatnet = None
     _channel_list = None
+    RECONNECT_MAX_ATTEMPTS = 10
 
     @property
     def plugins(self):
