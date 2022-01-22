@@ -47,13 +47,18 @@ if __name__ == '__main__':
                 _logger.info(
                     f'connecting to {settings["uri"]}:{settings["port"]}...'
                 )
-                _pool.connect(
-                    client,
-                    settings['uri'],
-                    settings['port'],
-                    password=settings.get('password'),
-                    tls=settings['use_tls'],
-                    tls_verify=settings['tls_verify']
-                )
+                try:
+                    _pool.connect(
+                        client,
+                        settings['uri'],
+                        settings['port'],
+                        password=settings.get('password'),
+                        tls=settings['use_tls'],
+                        tls_verify=settings['tls_verify']
+                    )
+                except Exception:
+                    _logger.exception(
+                        'unable to connect to %s', settings['uri']
+                    )
 
 _pool.handle_forever()
