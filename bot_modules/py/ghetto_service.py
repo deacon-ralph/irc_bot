@@ -159,7 +159,10 @@ class Plugin(plugin_api.LocalPlugin):
             _logger.info('mode changed by bot admin')
             return
 
-        await self.client.set_mode(channel, '+mi')
+        users = copy.deepcopy(self.client.channels[channel]['users'])
+        users.remove(self.client.nickname)
+        mode = f'+mi-{"o" * len(users)}'
+        await self.client.set_mode(channel, mode, *users)
         users = copy.deepcopy(self.client.users)
         for nick, whois_info in users.items():
             if nick != self.client.nickname \
