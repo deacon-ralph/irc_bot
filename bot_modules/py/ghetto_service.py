@@ -6,6 +6,7 @@ This service handles
     3. auto opping bot admins
 """
 import asyncio
+import copy
 
 import logger
 
@@ -144,7 +145,7 @@ class Plugin(plugin_api.LocalPlugin):
             # make sure we dont kick a bot admin who kicked another admin
             if not await common.is_user_admin(self.client, by):
                 # wasnt a bot admin, give em the boot
-                await self.client.kick(channel, by, reason='Lost Terminal')
+                await self._kick_all_with_same_host(channel, by)
             await self.client.rawmsg('INVITE', target, channel)
 
     async def on_invite(self, channel, by):
@@ -158,7 +159,18 @@ class Plugin(plugin_api.LocalPlugin):
             _logger.info('mode changed by bot admin')
             return
 
+        await self._check_admin_not_deoped(channel, modes, by)
+
+    async def _check_admin_not_deoped(self, channel, modes, by):
+        """Checks bot admin wasnt deoped, and if they were, kick the user(s)
+
+        :param str channel: the channel
+        :param list modes: list of modes and nicks
+            ex: ['-oo', 'user1', 'user2']
+        :param str by: user who initiated the kick
+        """
         current_modes = self.client.channels[channel]['modes']
+        print(self.client.users)
         o = current_modes.get('o', [])
         a = current_modes.get('a', [])
         q = current_modes.get('q', [])
@@ -168,4 +180,24 @@ class Plugin(plugin_api.LocalPlugin):
             if await common.is_user_admin(self.client, user):
                 if not any(user in mode for mode in [o, a, q]):
                     await self._defcon_2(channel)
-                    await self.client.kick(channel, by, reason='Lost Terminal')
+                    await self._kick_all_with_same_host(channel, by)
+
+    async def _kick_all_with_same_host(self, channel, target):
+        """Kicks all users with the same host; excludes this bot, and bot admins
+
+        :param str channel: the channel
+        :param str target: the user to kick
+        :return:
+        """
+        users = copy.deepcopy(self.client.users)
+        hostname = users.get(target).get('hostname')
+        for nick, whois_info in users.items():
+            if whois_info.get('hostname') == hostname:
+                # dont kick this bot or bot admins
+                if nick != self.client.nickname \
+                        and not await common.is_user_admin(self.client, nick):
+                    await self.client.kick(
+                        channel,
+                        nick,
+                        reason='Lost Terminal'
+                    )
