@@ -59,6 +59,10 @@ class FamilyFriendlyChatBot(pydle.Client):
 
         will do initial loading of enabled plugins
         """
+        async def patch_message(*args):
+            print('patched message, doing nothing')
+            return
+        self.message = patch_message
         self.plugins = common.load_py_plugins(self.chatnet)
 
         for chan in self._channels:
