@@ -84,7 +84,7 @@ class Plugin(plugin_api.LocalPlugin):
         :param str target: the channel
         :return:
         """
-        users = self.client.channels[target]['users']
+        users = copy.deepcopy(self.client.channels[target]['users'])
         mode = f'+mi-{"v" * len(users)}'
         await self.client.set_mode(target, mode, *users)
         await asyncio.sleep(5)
@@ -170,7 +170,6 @@ class Plugin(plugin_api.LocalPlugin):
         :param str by: user who initiated the kick
         """
         current_modes = self.client.channels[channel]['modes']
-        print(self.client.users)
         o = current_modes.get('o', [])
         a = current_modes.get('a', [])
         q = current_modes.get('q', [])
