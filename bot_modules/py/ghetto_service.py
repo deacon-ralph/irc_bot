@@ -187,7 +187,6 @@ class Plugin(plugin_api.LocalPlugin):
 
         :param str channel: the channel
         :param str target: the user to kick
-        :return:
         """
         users = copy.deepcopy(self.client.users)
         hostname = users.get(target).get('hostname')
