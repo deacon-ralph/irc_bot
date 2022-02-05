@@ -24,6 +24,7 @@ class Plugin(plugin_api.LocalPlugin):
     server = None
     ssl_ctx = None
     writers = set()
+    open_port = 'Not open'
 
     def help_msg(self):
         return {
@@ -167,6 +168,7 @@ class Plugin(plugin_api.LocalPlugin):
                     port,
                     ssl=self.ssl_ctx
                 )
+                self.open_port = port
                 _logger.info(f'starting server on port {port}')
                 break
             except OSError:
@@ -180,6 +182,8 @@ class Plugin(plugin_api.LocalPlugin):
         await super().on_message(target, by, message)
         if not self.enabled:
             return
+        if message == '.rpc port':
+
         for writer in self.writers:
             json_data = json.dumps(
                 {"target": target, "by": by, "message": message}
