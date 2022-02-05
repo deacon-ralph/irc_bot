@@ -13,6 +13,8 @@ import plugin_api
 
 _logger = logger.LOGGER
 
+_PORTS = [12345+i for i in range(100)]
+
 
 class Plugin(plugin_api.LocalPlugin):
     """Remote socket handler"""
@@ -24,7 +26,9 @@ class Plugin(plugin_api.LocalPlugin):
     writers = set()
 
     def help_msg(self):
-        return "Remote socket plugin"
+        return {
+            "port": "'.rpc port' to display port to connect to. see https://github.com/deacon-ralph/irc_bot/tree/main/rpc_lib"
+        }
 
     def on_reload(self):
         super().on_reload()
@@ -156,11 +160,19 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def socket_listen(self):
         """Starts a socket server"""
-        self.server = await asyncio.start_server(
-            self.socket_recv, '0.0.0.0',
-            12345,
-            ssl=self.ssl_ctx
-        )
+        for port in _PORTS:
+            try:
+                self.server = await asyncio.start_server(
+                    self.socket_recv, '0.0.0.0',
+                    port,
+                    ssl=self.ssl_ctx
+                )
+                _logger.info(f'starting server on port {port}')
+                break
+            except OSError:
+                if port == _PORTS[-1]:
+                    _logger.error('All ports in use :(')
+
         async with self.server:
             await self.server.serve_forever()
 
