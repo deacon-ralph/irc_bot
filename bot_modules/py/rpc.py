@@ -183,7 +183,9 @@ class Plugin(plugin_api.LocalPlugin):
         if not self.enabled:
             return
         if message == '.rpc port':
-
+            await self.client.message(
+                target, str(self.open_port)
+            )
         for writer in self.writers:
             json_data = json.dumps(
                 {"target": target, "by": by, "message": message}
