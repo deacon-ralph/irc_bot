@@ -18,6 +18,11 @@ except ModuleNotFoundError:
 
 _LOGGER = loguru.logger
 
+# used by nooscope
+_DEFAULT_CAFILE = f'{pathlib.Path(__file__).parent.resolve()}' \
+                  f'{os.path.sep}' \
+                  f'selfsigned.cert'
+
 _LOGGER.add(
     sys.stderr,
     format="{time} {level} {message}",
@@ -102,13 +107,11 @@ class TcpClient:
         self._host = host
         self._port = port
         self._impl = impl
-        self._ssl_context = cafile or self._create_ssl_conext()
+        self._cafile = cafile or _DEFAULT_CAFILE
+        self._ssl_context = self._create_ssl_conext(cafile)
 
     @classmethod
-    def _create_ssl_conext(cls):
-        cafile = f'{pathlib.Path(__file__).parent.resolve()}' \
-                 f'{os.path.sep}' \
-                 f'selfsigned.cert'
+    def _create_ssl_conext(cls, cafile):
         context = ssl.create_default_context(
             ssl.Purpose.SERVER_AUTH,
             cafile=cafile
