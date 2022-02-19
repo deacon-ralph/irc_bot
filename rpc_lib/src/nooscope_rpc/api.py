@@ -90,7 +90,7 @@ class Rpc:
 
 class TcpClient:
 
-    def __init__(self, host, port, impl):
+    def __init__(self, host, port, impl, cafile=None):
         """Initialize tcp client
 
         :param str host: host/ip
@@ -102,7 +102,7 @@ class TcpClient:
         self._host = host
         self._port = port
         self._impl = impl
-        self._ssl_context = self._create_ssl_conext()
+        self._ssl_context = cafile or self._create_ssl_conext()
 
     @classmethod
     def _create_ssl_conext(cls):

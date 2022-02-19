@@ -20,12 +20,18 @@ class Impl(api.IrcImpl):
          await self.rpc.send_message(target, 'hacking gibson from RPC')
       elif message.startswith('dieplz'):
          await self.rpc.disconnect()
+         exit(1)
 
 
 async def main():
    # endless loop to always try and connect
    while True:
-      tcp = api.TcpClient('127.0.0.1', 12345, Impl()) # use bots host ip
+      tcp = api.TcpClient(
+         '127.0.0.1', # use your bots host ip
+         12345, 
+         Impl(), 
+         cafile='path/to/yourcafile.cert'
+      )
       await tcp.connect()
       await tcp.read()
 
