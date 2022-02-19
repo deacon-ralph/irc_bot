@@ -23,8 +23,12 @@ class Plugin(plugin_api.LocalPlugin):
     stop = False
     server = None
     ssl_ctx = None
-    writers = set()
+    writers = None
     open_port = 'Not open'
+
+    def __init__(self):
+        super().__init__()
+        self.writers = set()
 
     def help_msg(self):
         return {
