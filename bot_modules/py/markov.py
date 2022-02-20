@@ -128,6 +128,19 @@ class Plugin(plugin_api.LocalPlugin):
 
     _join_seen = set()
 
+    @classmethod
+    def _post_fix(cls, sentence):
+        """fixes anything before sending to channel
+
+        :param str sentence: the sentence
+
+        :returns: fixed sentence
+        :rtype: str
+        """
+        fix = sentence.replace('Https://', 'https://')
+        fix = fix.replace('Http://', "http://")
+        return fix
+
     def help_msg(self):
         return ".markov <optional arg> to generate random sentence"
 
@@ -147,7 +160,8 @@ class Plugin(plugin_api.LocalPlugin):
             sentence = await asyncio.ensure_future(
                 self.exec_proc(_shitpost, args)
             )
-            await self.client.message(target, sentence)
+            fixed_sentence = self._post_fix(sentence)
+            await self.client.message(target, fixed_sentence)
 
     async def on_join(self, channel, user):
         await super().on_join(channel, user)
