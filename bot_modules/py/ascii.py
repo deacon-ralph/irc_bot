@@ -84,6 +84,28 @@ class Plugin(plugin_api.LocalPlugin):
                 matched.append(hl_name)
         return sorted(matched)
 
+    async def _display_99_colors(self, target):
+        """Displays 99 color palette"""
+        c = 0
+        msg = ''
+        ctrl = colors.CONTROL_COLOR
+
+        for i in range(0, 16):
+            code = str(i).zfill(2)
+            msg += f'{ctrl}{code},{code}{code}{ctrl}'
+
+        await self.client.message(target, msg)
+
+        msg = ''
+        for i in range(16, 99):
+            code = str(i).zfill(2)
+            msg += f'{ctrl}{code},{code}{code}{ctrl}'
+            c += 1
+            if c == 12 or i == 98:
+                await self.client.message(target, msg)
+                msg = ''
+                c = 0
+
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
         if not self.enabled:
@@ -109,23 +131,7 @@ class Plugin(plugin_api.LocalPlugin):
                     f'{colors.colorize(search_word, fg=colors.RED)}'
                 )
         elif message == '.ascii 99':
-            c = 0
-            msg = ''
-            ctrl = colors.CONTROL_COLOR
-            for i in range(0, 16):
-                code = str(i).zfill(2)
-                msg += f'{ctrl}{code},{code}{code}{ctrl}'
-            await self.client.message(target, msg)
-            msg = ''
-
-            for i in range(16, 99):
-                code = str(i).zfill(2)
-                msg += f'{ctrl}{code},{code}{code}{ctrl}'
-                c += 1
-                if c == 12 or i == 98:
-                    await self.client.message(target, msg)
-                    msg = ''
-                    c = 0
+            await self._display_99_colors(target)
         elif message.startswith('.ascii'):
             art = message.replace('.ascii', '').strip()
 
