@@ -116,7 +116,7 @@ class Plugin(plugin_api.LocalPlugin):
                 code = str(i).zfill(2)
                 msg += f'{ctrl}{code},{code}{code}{ctrl}'
                 c += 1
-                if c == 9:
+                if c == 11 or i == 99:
                     await self.client.message(target, msg)
                     msg = ''
                     c = 0
