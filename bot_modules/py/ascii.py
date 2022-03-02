@@ -111,8 +111,14 @@ class Plugin(plugin_api.LocalPlugin):
         elif message == '.ascii 99':
             c = 0
             msg = ''
-            for i in range(0, 100):
-                ctrl = colors.CONTROL_COLOR
+            ctrl = colors.CONTROL_COLOR
+            for i in range(0, 16):
+                code = str(i).zfill(2)
+                msg += f'{ctrl}{code},{code}{code}{ctrl}'
+            await self.client.message(target, msg)
+            msg = ''
+
+            for i in range(16, 99):
                 code = str(i).zfill(2)
                 msg += f'{ctrl}{code},{code}{code}{ctrl}'
                 c += 1
