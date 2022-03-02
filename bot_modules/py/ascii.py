@@ -112,7 +112,9 @@ class Plugin(plugin_api.LocalPlugin):
             c = 0
             msg = ''
             for i in range(0, 100):
-                msg += f'{colors.CONTROL_COLOR}{str(i).zfill(2)},{str(i).zfill(2)}{str(i).zfill(2)}{colors.CONTROL_COLOR}'
+                ctrl = colors.CONTROL_COLOR
+                code = str(i).zfill(2)
+                msg += f'{ctrl}{code},{code}{code}{ctrl}'
                 c += 1
                 if c == 9:
                     await self.client.message(target, msg)
