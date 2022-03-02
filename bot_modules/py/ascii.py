@@ -108,6 +108,17 @@ class Plugin(plugin_api.LocalPlugin):
                     f'no asciis found for '
                     f'{colors.colorize(search_word, fg=colors.RED)}'
                 )
+        elif message == '.ascii 99':
+            c = 0
+            msgs = []
+            msg = ''
+            for i in range(0, 100):
+                msg += f'{colors.CONTROL_COLOR}{str(i).zfill(2)},{str(i).zfill(2)}{i}{colors.CONTROL_COLOR}'
+                c += 1
+                if c == 9:
+                    await self.client.message(target, msg)
+                    c = 0
+
         elif message.startswith('.ascii'):
             art = message.replace('.ascii', '').strip()
 
