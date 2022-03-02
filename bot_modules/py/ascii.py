@@ -118,7 +118,6 @@ class Plugin(plugin_api.LocalPlugin):
                     await self.client.message(target, msg)
                     msg = ''
                     c = 0
-
         elif message.startswith('.ascii'):
             art = message.replace('.ascii', '').strip()
 
