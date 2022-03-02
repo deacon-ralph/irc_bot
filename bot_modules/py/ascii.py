@@ -117,6 +117,7 @@ class Plugin(plugin_api.LocalPlugin):
                 c += 1
                 if c == 9:
                     await self.client.message(target, msg)
+                    msg = ''
                     c = 0
 
         elif message.startswith('.ascii'):
