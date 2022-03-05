@@ -27,15 +27,16 @@ openssl req -x509 -newkey rsa:2048 -keyout selfsigned.key -nodes -out selfsigned
 # Build container
 docker build -t <tag> .
 
-# Run container, assuming you cloned this repo into your home directory ~/
+# Run container
+FOLDER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 docker run --rm \
--p 6680:6680 \
--v ~/irc_bot/ascii_art:/irc_bot/ascii_art \
--v ~/irc_bot/chatter.log:/irc_bot/chatter.log \
--v ~/irc_bot/admins.toml:/irc_bot/admins.toml \
--v ~/irc_bot/config.toml:/irc_bot/config.toml \
--v ~/irc_bot/bot_modules:/irc_bot/bot_modules \
--t <tag>
+-p 12345-12444:12345-12444 \
+-v $FOLDER_PATH/ascii_art:/irc_bot/ascii_art \
+-v $FOLDER_PATH/chatter.log:/irc_bot/chatter.log \
+-v $FOLDER_PATH/admins.toml:/irc_bot/admins.toml \
+-v $FOLDER_PATH/config.toml:/irc_bot/config.toml \
+-v $FOLDER_PATH/bot_modules:/irc_bot/bot_modules \
+-t <tag>>
 ```
 
 ### GLHF, CHAT HARD
