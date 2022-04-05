@@ -37,18 +37,17 @@ class Plugin(plugin_api.LocalPlugin):
         if 'spotify' in message:
             try:
                 url = re.search(
-                    "(?P<url>https?://[^\s]+)",
+                    "(?P<url>https?://open.spotify.com[^\s]+)",
                     message
                 ).group("url")
-                if 'spotify' in url:
-                    title = await self._parse_spotify(url)
-                    title = ' ' + title + ' '  # add padding
-                    song_btn = colors.colorize(' ♪ ', fg=colors.BLACK, bg=colors.LIME)
-                    title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
-                    await self.client.message(
-                        target,
-                        f'{song_btn} {title}'
-                    )
+                title = await self._parse_spotify(url)
+                title = ' ' + title + ' '  # add padding
+                song_btn = colors.colorize(' ♪ ', fg=colors.BLACK, bg=colors.LIME)
+                title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
+                await self.client.message(
+                    target,
+                    f'{song_btn} {title}'
+                )
             except AttributeError:
                 pass
             except Exception:

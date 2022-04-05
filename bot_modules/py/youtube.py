@@ -66,19 +66,18 @@ class Plugin(plugin_api.LocalPlugin):
         if 'youtube' in message or 'youtu.be' in message:
             try:
                 url = re.search(
-                    "(?P<url>https?://[^\s]+)",
+                    "(?P<url>^(https?://)?((www\.)?youtube\.com|youtu\.be)/.+$)",
                     message
                 ).group("url")
-                if 'youtube' in url or 'youtu.be' in url:
-                    title, author, duration = await self._parse_youtube(url)
-                    play_btn = colors.colorize(' ▶ ', fg=colors.SILVER, bg=colors.RED)
-                    title = ' ' + title + f' | {author}' + ' '  # add padding
-                    title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
-                    duration = colors.colorize(f'[{duration}]', fg=colors.BLACK, bg=colors.SILVER)
-                    await self.client.message(
-                        target,
-                        f'{play_btn} {title} {duration}'
-                    )
+                title, author, duration = await self._parse_youtube(url)
+                play_btn = colors.colorize(' ▶ ', fg=colors.SILVER, bg=colors.RED)
+                title = ' ' + title + f' | {author}' + ' '  # add padding
+                title = colors.colorize(title, fg=colors.BLACK, bg=colors.SILVER)
+                duration = colors.colorize(f'[{duration}]', fg=colors.BLACK, bg=colors.SILVER)
+                await self.client.message(
+                    target,
+                    f'{play_btn} {title} {duration}'
+                )
             except AttributeError:
                 pass
             except Exception:
