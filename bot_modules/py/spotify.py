@@ -37,7 +37,7 @@ class Plugin(plugin_api.LocalPlugin):
         if 'spotify' in message:
             try:
                 url = re.search(
-                    "(?P<url>https?://open.spotify.com[^\s]+)",
+                    "(?P<url>https?://open.spotify.com/[^\s]+)",
                     message
                 ).group("url")
                 title = await self._parse_spotify(url)
