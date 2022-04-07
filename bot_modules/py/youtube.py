@@ -66,7 +66,7 @@ class Plugin(plugin_api.LocalPlugin):
         if 'youtube' in message or 'youtu.be' in message:
             try:
                 url = re.search(
-                    "(?P<url>^(https?://)?((www\.)?youtube\.com|youtu\.be)/.+$)",
+                    "(?P<url>(https?://)?((www\.)?youtube\.com|youtu\.be)/.+$)",
                     message
                 ).group("url")
                 title, author, duration = await self._parse_youtube(url)
