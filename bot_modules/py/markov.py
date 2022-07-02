@@ -173,4 +173,5 @@ class Plugin(plugin_api.LocalPlugin):
             self.exec_proc(_shitpost, user)
         )
         self._join_seen.add(user)
-        await self.client.message(channel, sentence)
+        fixed_sentence = self._post_fix(sentence)
+        await self.client.message(channel, fixed_sentence)
