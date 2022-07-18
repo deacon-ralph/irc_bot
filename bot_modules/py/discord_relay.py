@@ -131,7 +131,8 @@ class Plugin(plugin_api.LocalPlugin):
     def help_msg(self):
         return 'discord relay bot'
 
-    def _strip_ctrl_chars(self, text):
+    @classmethod
+    def _strip_ctrl_chars(cls, text):
         """Strips ctrl chars to send to dicksword
 
         :param str text: some text
