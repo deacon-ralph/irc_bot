@@ -1,6 +1,7 @@
 """Discord relay module"""
 
 import asyncio
+import re
 
 import discord
 
@@ -122,11 +123,24 @@ class Plugin(plugin_api.LocalPlugin):
             )
             if discord_chan and relay['irc_channel'] in whois['channels']:
                 await discord_chan.send(
-                    f'**{old}** *is now known as*  **{new}**'
+                    f'**{self._strip_ctrl_chars(old)}** '
+                    f'*is now known as* '
+                    f'**{self._strip_ctrl_chars(new)}**'
                 )
 
     def help_msg(self):
         return 'discord relay bot'
+
+    def _strip_ctrl_chars(self, text):
+        """Strips ctrl chars to send to dicksword
+
+        :param str text: some text
+
+        :returns: text strippled of most ctrl chars
+        :rtype: str
+        """
+        ctrl_chars_pattern = r'[\x02\x0F\x16\x1D\x1F]|\x03(\d{,2}(,\d{,2})?)?'
+        return re.sub(ctrl_chars_pattern, '', text)
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
@@ -142,14 +156,16 @@ class Plugin(plugin_api.LocalPlugin):
                     f'no discord_relay settings for {self.client.chatnet}'
                 )
                 return
-
             for relay in relay_settings:
                 if target == relay['irc_channel']:
                     discord_chan = self.discord_client.get_channel(
                         relay['discord_channel']
                     )
                     if discord_chan:
-                        await discord_chan.send(f'**<{by}>**: {message}')
+                        await discord_chan.send(
+                            f'**<{self._strip_ctrl_chars(by)}>**: '
+                            f'{self._strip_ctrl_chars(message)}'
+                        )
 
             # logging stuff
             # print('channels', self.discord_client.get_all_channels())
