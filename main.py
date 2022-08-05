@@ -1,5 +1,6 @@
 """Main module"""
 import pydle
+import pydle.features.rfc1459.protocol as protocol
 
 import bots
 import common
@@ -13,6 +14,32 @@ g_nick = common.CONFIG['nick']
 g_username = common.CONFIG['username']
 g_realname = common.CONFIG['realname']
 g_fallback_nicknames = common.CONFIG['fallback_nicknames']
+
+
+def _patched_parse_user(raw):
+    """ Parse nick(!user(@host)?)? structure.
+    patch to allow for nicks with @ or ! in them
+    """
+    nick = raw
+    user = None
+    host = None
+
+    # Attempt to extract host.
+    if protocol.HOST_SEPARATOR in raw:
+        host_split =  raw.split(protocol.HOST_SEPARATOR)
+        raw = ''.join(host_split[:-1])
+
+    # Attempt to extract user.
+    if protocol.USER_SEPARATOR in raw:
+        nick_split = raw.split(protocol.USER_SEPARATOR)
+        nick = ''.join(nick_split[:-1])
+        user = nick_split[-1]
+
+    return nick, user, host
+
+
+# patch rfc1459 parsing
+pydle.features.rfc1459.parsing.parse_user = _patched_parse_user
 
 
 def _make_client(chatnet, data):
