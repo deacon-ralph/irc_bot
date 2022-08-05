@@ -24,11 +24,7 @@ class Plugin(plugin_api.LocalPlugin):
         :returns: title
         :rtype: str
         """
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; '
-                          'rv:103.0) Gecko/20100101 Firefox/103.0'
-        }
-        html = requests.get(link, headers=headers).text
+        html = requests.get(link).text
 
         soup = bs4.BeautifulSoup(html, features='lxml')
         title = soup.find('title')
