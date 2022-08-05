@@ -24,11 +24,18 @@ class Plugin(plugin_api.LocalPlugin):
         :returns: title
         :rtype: str
         """
-        html = requests.get(link).text
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; '
+                          'rv:103.0) Gecko/20100101 Firefox/103.0'
+        }
+        html = requests.get(link, headers=headers).text
 
         soup = bs4.BeautifulSoup(html, features='lxml')
         title = soup.find('title')
-        return title.string.replace(' | Spotify', '').replace('song by ', '')
+        return title.string\
+            .replace(' | Spotify', '')\
+            .replace('song by ', '')\
+            .replace('song and lyrics by ', '')
 
     async def on_message(self, target, by, message):
         await super().on_message(target, by, message)
