@@ -31,9 +31,7 @@ def _patched_parse_user(raw):
 
     # Attempt to extract user.
     if protocol.USER_SEPARATOR in raw:
-        nick_split = raw.split(protocol.USER_SEPARATOR)
-        nick = ''.join(nick_split[:-1])
-        user = nick_split[-1]
+        nick, user = raw.split(protocol.USER_SEPARATOR)
 
     return nick, user, host
 
