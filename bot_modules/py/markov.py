@@ -163,15 +163,15 @@ class Plugin(plugin_api.LocalPlugin):
             fixed_sentence = self._post_fix(sentence)
             await self.client.message(target, fixed_sentence)
 
-    # async def on_join(self, channel, user):
-    #     await super().on_join(channel, user)
-    #     if not self.enabled:
-    #         return
-    #     if user in self._join_seen:
-    #         return
-    #     sentence = await asyncio.ensure_future(
-    #         self.exec_proc(_shitpost, user)
-    #     )
-    #     self._join_seen.add(user)
-    #     fixed_sentence = self._post_fix(sentence)
-    #     await self.client.message(channel, fixed_sentence)
+    async def on_join(self, channel, user):
+        await super().on_join(channel, user)
+        if user in self._join_seen:
+            return
+        sentence = await asyncio.ensure_future(
+            self.exec_proc(_shitpost, user)
+        )
+        self._join_seen.add(user)
+        fixed_sentence = self._post_fix(sentence)
+        if not self.enabled:
+            return
+        await self.client.message(channel, fixed_sentence)
