@@ -1,5 +1,6 @@
 """Main module"""
 import pydle
+import pydle.client as pydle_client
 import pydle.features.rfc1459.protocol as protocol
 
 import bots
@@ -37,8 +38,25 @@ def _patched_parse_user(raw):
     return nick, user, host
 
 
+def _create_user(self, nickname):
+    # patching to allow for . in nickname
+    # previously it checked if . was in nickname to avoid adding servers
+    # idk what the consequences of this will be...
+    if not nickname:
+        return
+
+    self.users[nickname] = {
+        'nickname': nickname,
+        'username': None,
+        'realname': None,
+        'hostname': None
+    }
+
+
 # patch rfc1459 parsing
 pydle.features.rfc1459.parsing.parse_user = _patched_parse_user
+# patch for pdyle.client.BaseClient
+pydle_client.BasicClient._create_user = _create_user
 
 
 def _make_client(chatnet, data):
