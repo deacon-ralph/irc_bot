@@ -38,7 +38,7 @@ def _patched_parse_user(raw):
     return nick, user, host
 
 
-def _create_user(self, nickname):
+def _patched_create_user(self, nickname):
     # patching to allow for . in nickname
     # previously it checked if . was in nickname to avoid adding servers
     # idk what the consequences of this will be...
@@ -56,7 +56,7 @@ def _create_user(self, nickname):
 # patch rfc1459 parsing
 pydle.features.rfc1459.parsing.parse_user = _patched_parse_user
 # patch for pdyle.client.BaseClient
-pydle_client.BasicClient._create_user = _create_user
+pydle_client.BasicClient._create_user = _patched_create_user
 
 
 def _make_client(chatnet, data):
