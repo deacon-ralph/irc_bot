@@ -5,4 +5,8 @@ config.toml
 **/bot_modules/**
 ascii_art/**
 **troll.b64**
+trollb64.txt
+*trollb64.txt*
+**trollb64.txt**
+**trollb64.txt/*
 

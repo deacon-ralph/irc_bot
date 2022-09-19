@@ -28,7 +28,7 @@ class Plugin(plugin_api.LocalPlugin):
         :rtype: list[str]
         """
         root_folder = pathlib.Path(__file__).parent.parent.parent.resolve()
-        trolldb_path = root_folder.joinpath('troll.b64').resolve()
+        trolldb_path = root_folder.joinpath('trollb64.txt').resolve()
         with open(trolldb_path, 'br') as f:
             trolls = f.read()
             trolls = base64.b64decode(trolls)
