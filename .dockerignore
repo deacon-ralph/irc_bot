@@ -4,5 +4,5 @@ admins.toml
 config.toml
 **/bot_modules/**
 ascii_art/**
-troll.b64
-**.b64
+**troll.b64**
+
