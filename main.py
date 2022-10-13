@@ -86,7 +86,6 @@ def _make_client(chatnet, data):
 if __name__ == '__main__':
     for server in common.CONFIG['servers']:
         for chatnet, settings in server.items():
-            print(chatnet, type(settings), settings)
             if settings['auto_connect']:
                 client = _make_client(chatnet, settings)
                 _logger.info(
