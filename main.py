@@ -57,7 +57,7 @@ def _patched_create_user(self, nickname):
 async def _patched_on_isupport_modes(self, value):
     """patched for some bullshit idk"""
     try:
-        _logger.info('modes value: %s', value)
+        _logger.info(f'modes value: {value}')
         self._mode_limit = int(value)
     except TypeError as e:
         _logger.warning('isupport modes shit')
