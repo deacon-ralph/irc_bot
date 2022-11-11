@@ -68,7 +68,7 @@ pydle.features.rfc1459.parsing.parse_user = _patched_parse_user
 # patch for pdyle.client.BaseClient
 pydle_client.BasicClient._create_user = _patched_create_user
 #patch for isupport 005 raw handler
-pydle.features.isupport.on_isupport_modes = _patched_on_isupport_modes
+pydle.features.isupport.ISUPPORTSupport.on_isupport_modes = _patched_on_isupport_modes
 
 
 def _make_client(chatnet, data):
