@@ -72,6 +72,13 @@ class _DiscordClient(discord.Client):
                             message.author,
                             message.content
                         )
+                        await self.irc_client.plugins.get(
+                            'spotify'
+                        ).on_message(
+                            relay['irc_channel'],
+                            message.author,
+                            message.content
+                        )
                     for attachment in message.attachments:
                         await self.irc_client.message(
                             relay['irc_channel'],
