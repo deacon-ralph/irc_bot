@@ -104,6 +104,7 @@ class Plugin(plugin_api.LocalPlugin):
         )
 
     async def on_message(self, target, by, message):
+        # this is not affected by the plugin being enabled or disabled.
         await super().on_message(target, by, message)
         if message.startswith('.defcon '):
             if not await common.is_user_admin(self.client, by):
@@ -125,6 +126,7 @@ class Plugin(plugin_api.LocalPlugin):
                 await self._defcon_4(target)
 
     async def on_join(self, channel, user):
+        # always ops bod admins, regardless of enabled value
         await super().on_join(channel, user)
         if await common.is_user_admin(self.client, user):
             _logger.info('setting mode to +o for %s', user)
@@ -134,6 +136,7 @@ class Plugin(plugin_api.LocalPlugin):
         await super().on_join(channel, user)
 
     async def on_kick(self, channel, target, by, reason=None):
+        # ignored if plugin is disabled
         await super().on_kick(channel, target, by, reason)
         if not self.enabled:
             return
@@ -146,11 +149,13 @@ class Plugin(plugin_api.LocalPlugin):
             await self.client.rawmsg('INVITE', target, channel)
 
     async def on_invite(self, channel, by):
+        # always respond to invites by bot admins, regardless of enabled value
         await super().on_invite(channel, by)
         if await common.is_user_admin(self.client, by):
             await self.client.join(channel)
 
     async def on_mode_change(self, channel, modes, by):
+        # ignored if plugin is disabled
         await super().on_mode_change(channel, modes, by)
         if not self.enabled:
             return
