@@ -135,6 +135,8 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_kick(self, channel, target, by, reason=None):
         await super().on_kick(channel, target, by, reason)
+        if not self.enabled:
+            return
         if await common.is_user_admin(self.client, target):
             await self._defcon_3(channel)
             # make sure we dont kick a bot admin who kicked another admin
@@ -150,6 +152,8 @@ class Plugin(plugin_api.LocalPlugin):
 
     async def on_mode_change(self, channel, modes, by):
         await super().on_mode_change(channel, modes, by)
+        if not self.enabled:
+            return
         if await common.is_user_admin(self.client, by):
             _logger.info('mode changed by bot admin')
             return
