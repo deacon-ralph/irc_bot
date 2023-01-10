@@ -6,6 +6,8 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
+name = "nooscope-rpc"
+version = "1.0.15"
 dependencies = [
   'loguru >= 0.5.3',
 ]

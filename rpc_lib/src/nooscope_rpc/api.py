@@ -108,7 +108,7 @@ class TcpClient:
         self._port = port
         self._impl = impl
         self._cafile = cafile or _DEFAULT_CAFILE
-        self._ssl_context = self._create_ssl_conext(cafile)
+        self._ssl_context = self._create_ssl_conext(self._cafile)
 
     @classmethod
     def _create_ssl_conext(cls, cafile):

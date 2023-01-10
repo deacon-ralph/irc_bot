@@ -6,7 +6,7 @@ loguru==0.5.3
 lxml==4.6.3
 numpy==1.21.3
 pendulum==1.4.4
-pydle==0.9.4
+pydle==1.0.1
 requests==2.26.0
 scapy==2.4.5
 toml==0.10.2
