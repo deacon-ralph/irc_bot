@@ -133,7 +133,6 @@ class Plugin(plugin_api.LocalPlugin):
             discord_chan = self.discord_client.get_channel(
                 relay['discord_channel']
             )
-            print(relay['irc_channel'], whois['channels'])
             whois_chans = [chan.lstrip('~') for chan in whois['channels']]
             if discord_chan and relay['irc_channel'] in whois_chans:
                 if discord_chan not in discord_chans_notified:
