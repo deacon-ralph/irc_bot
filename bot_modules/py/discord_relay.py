@@ -166,16 +166,20 @@ class Plugin(plugin_api.LocalPlugin):
                     f'no discord_relay settings for {self.client.chatnet}'
                 )
                 return
+
+            discord_chans_notified = set()
             for relay in relay_settings:
                 if target == relay['irc_channel']:
                     discord_chan = self.discord_client.get_channel(
                         relay['discord_channel']
                     )
                     if discord_chan:
-                        await discord_chan.send(
-                            f'**<{self._strip_ctrl_chars(by)}>**: '
-                            f'{self._strip_ctrl_chars(message)}'
-                        )
+                        if discord_chan not in discord_chans_notified:
+                            await discord_chan.send(
+                                f'**<{self._strip_ctrl_chars(by)}>**: '
+                                f'{self._strip_ctrl_chars(message)}'
+                            )
+                            discord_chans_notified.add(discord_chan)
 
             # logging stuff
             # print('channels', self.discord_client.get_all_channels())
