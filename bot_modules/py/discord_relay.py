@@ -175,11 +175,11 @@ class Plugin(plugin_api.LocalPlugin):
                     )
                     if discord_chan:
                         if discord_chan not in discord_chans_notified:
+                            discord_chans_notified.add(discord_chan)
                             await discord_chan.send(
                                 f'**<{self._strip_ctrl_chars(by)}>**: '
                                 f'{self._strip_ctrl_chars(message)}'
                             )
-                            discord_chans_notified.add(discord_chan)
 
             # logging stuff
             # print('channels', self.discord_client.get_all_channels())
