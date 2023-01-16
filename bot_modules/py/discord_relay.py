@@ -128,6 +128,7 @@ class Plugin(plugin_api.LocalPlugin):
             discord_chan = self.discord_client.get_channel(
                 relay['discord_channel']
             )
+            print(relay['irc_channel'], whois['channels'])
             if discord_chan and relay['irc_channel'] in whois['channels']:
                 await discord_chan.send(
                     f'**{self._strip_ctrl_chars(old)}** '
