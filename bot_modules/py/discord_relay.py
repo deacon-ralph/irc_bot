@@ -130,12 +130,15 @@ class Plugin(plugin_api.LocalPlugin):
             )
             print(relay['irc_channel'], whois['channels'])
             whois_chans = [chan.lstrip('~') for chan in whois['channels']]
+            discord_chans_notified = set()
             if discord_chan and relay['irc_channel'] in whois_chans:
-                await discord_chan.send(
-                    f'**{self._strip_ctrl_chars(old)}** '
-                    f'*is now known as* '
-                    f'**{self._strip_ctrl_chars(new)}**'
-                )
+                if discord_chan not in discord_chans_notified:
+                    discord_chans_notified.add(discord_chan)
+                    await discord_chan.send(
+                        f'**{self._strip_ctrl_chars(old)}** '
+                        f'*is now known as* '
+                        f'**{self._strip_ctrl_chars(new)}**'
+                    )
 
     def help_msg(self):
         return 'discord relay bot'
@@ -166,21 +169,16 @@ class Plugin(plugin_api.LocalPlugin):
                     f'no discord_relay settings for {self.client.chatnet}'
                 )
                 return
-
-            discord_chans_notified = set()
             for relay in relay_settings:
                 if target == relay['irc_channel']:
                     discord_chan = self.discord_client.get_channel(
                         relay['discord_channel']
                     )
                     if discord_chan:
-                        if discord_chan not in discord_chans_notified:
-                            print('discod_chan not in:', discord_chan, discord_chans_notified)
-                            discord_chans_notified.add(discord_chan)
-                            await discord_chan.send(
-                                f'**<{self._strip_ctrl_chars(by)}>**: '
-                                f'{self._strip_ctrl_chars(message)}'
-                            )
+                        await discord_chan.send(
+                            f'**<{self._strip_ctrl_chars(by)}>**: '
+                            f'{self._strip_ctrl_chars(message)}'
+                        )
 
             # logging stuff
             # print('channels', self.discord_client.get_all_channels())
