@@ -175,6 +175,7 @@ class Plugin(plugin_api.LocalPlugin):
                     )
                     if discord_chan:
                         if discord_chan not in discord_chans_notified:
+                            print('discod_chan not in:', discord_chan, discord_chans_notified)
                             discord_chans_notified.add(discord_chan)
                             await discord_chan.send(
                                 f'**<{self._strip_ctrl_chars(by)}>**: '
