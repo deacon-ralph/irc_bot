@@ -129,7 +129,7 @@ class Plugin(plugin_api.LocalPlugin):
                 relay['discord_channel']
             )
             print(relay['irc_channel'], whois['channels'])
-            whois_chans = [chan.lstrio('~') for chan in whois['channels']]
+            whois_chans = [chan.lstrip('~') for chan in whois['channels']]
             if discord_chan and relay['irc_channel'] in whois_chans:
                 await discord_chan.send(
                     f'**{self._strip_ctrl_chars(old)}** '
