@@ -124,13 +124,13 @@ class Plugin(plugin_api.LocalPlugin):
             return
 
         whois = await self.client.whois(new)
+        discord_chans_notified = set()
         for relay in relay_settings:
             discord_chan = self.discord_client.get_channel(
                 relay['discord_channel']
             )
             print(relay['irc_channel'], whois['channels'])
             whois_chans = [chan.lstrip('~') for chan in whois['channels']]
-            discord_chans_notified = set()
             if discord_chan and relay['irc_channel'] in whois_chans:
                 if discord_chan not in discord_chans_notified:
                     discord_chans_notified.add(discord_chan)
