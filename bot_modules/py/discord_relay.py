@@ -124,7 +124,11 @@ class Plugin(plugin_api.LocalPlugin):
             return
 
         whois = await self.client.whois(new)
+
+        # we use this so we dont notify the same channel multiple times
+        # in the event of a many irc chan to 1 discord chan relationship
         discord_chans_notified = set()
+
         for relay in relay_settings:
             discord_chan = self.discord_client.get_channel(
                 relay['discord_channel']
