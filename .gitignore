@@ -35,3 +35,4 @@ bot_modules/py/**/enabled.toml
 bot_modules/py/**/seen_data.json
 junk.json
 certs/selfsigned.key
+.python-version
