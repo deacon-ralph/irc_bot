@@ -52,7 +52,7 @@ class Plugin(plugin_api.LocalPlugin):
         """
         tweets = api.user_timeline(
             screen_name=username,
-            count=50,
+            count=20,
             exclude_replies=False,
             tweet_mode='extended'
         )
@@ -71,15 +71,13 @@ class Plugin(plugin_api.LocalPlugin):
                 _logger.info(f'fetching tweets from {username}')
                 tweets = self._get_tweets(api, username)
                 for tweet in tweets:
+                    _logger.info(f'last_scraped={self.last_scraped}, tweet.created_at={tweet.created_at}, should show: {tweet.created_at > self.last_scraped}')
                     if tweet.created_at > self.last_scraped:
                         _logger.info(
                             f'found tweet newer then '
                             f'{self.last_scraped.isoformat()}'
                         )
-                        try:
-                            text = tweet.retweeted_status.full_text
-                        except AttributeError:  # Not a Retweet
-                            text = tweet.full_text
+                        text = tweet.full_text
                         await self.client.message(
                             '#fishtanklive',
                             f'{colors.colorize(text="🐠 @"+ username, fg=colors.WHITE, bg=colors.BLUE_TWITTER)} {text}'
