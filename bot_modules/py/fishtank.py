@@ -76,7 +76,7 @@ class Plugin(plugin_api.LocalPlugin):
                         )
                         await self.client.message(
                             '#fishtanklive',
-                            f'{colors.colorize(text="🐠 @"+ username, fg=colors.WHITE, bg=colors.BLUE)} {tweet.text}'
+                            f'{colors.colorize(text="🐠 @"+ username, fg=colors.WHITE, bg=colors.BLUE_TWITTER)} {tweet.text}'
                         )
             self.last_scraped = pendulum.now(tz='UTC')
             await asyncio.sleep(390)
