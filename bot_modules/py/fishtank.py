@@ -94,4 +94,4 @@ class Plugin(plugin_api.LocalPlugin):
                         '#fishtanklive',
                         f'{colors.colorize(text="🐠 @"+ username, fg=colors.WHITE, bg=colors.BLUE_TWITTER)} {text}'
                     )
-                await asyncio.sleep(60)
+                await asyncio.sleep(30)
