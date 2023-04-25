@@ -81,7 +81,7 @@ class Plugin(plugin_api.LocalPlugin):
         while self.enabled:
             auth = tweepy.OAuthHandler(self.api_key, self.api_key_secret)
             auth.set_access_token(self.access_token, self.access_token_secret)
-            api = tweepy.API(auth, wait_on_rate_limit=True)
+            api = tweepy.API(auth)
             username_queries = [self.last_ftdl_id, self.last_cfd_id]
             for username_query in username_queries:
                 _logger.info(f'fetching tweets from {username_query.username}')
