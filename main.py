@@ -118,5 +118,10 @@ if __name__ == '__main__':
                     _logger.exception(
                         'unable to connect to %s', settings['uri']
                     )
-
-_pool.handle_forever()
+while True:
+    try:
+        _pool.handle_forever()
+    except KeyboardInterrupt:
+        exit(0)
+    except Exception:
+        _logger.exception('Failed in while loop :(')
