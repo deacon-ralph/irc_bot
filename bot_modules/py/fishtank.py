@@ -16,6 +16,7 @@ class Plugin(plugin_api.LocalPlugin):
 
     def __init__(self):
         super().__init__()
+        self.tweet_scraper_task = None
         self.last_scraped = pendulum.now(tz='UTC')
         self.twitter_config = common.parse_config().get('twitter')
         self.bearer_token = self.twitter_config.get('bearer_token')
@@ -33,10 +34,11 @@ class Plugin(plugin_api.LocalPlugin):
 
     def on_loaded(self, client):
         super().on_loaded(client)
-        asyncio.ensure_future(self._read_tweets())
+        self.tweet_scraper_task = asyncio.create_task(self._read_tweets())
 
     def on_reload(self):
         super().on_reload()
+        self.tweet_scraper_task.cancel()
 
     async def _read_tweets(self):
         """Reads fishtank tweets from @fishtankdotlive account"""
