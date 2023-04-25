@@ -52,7 +52,7 @@ class Plugin(plugin_api.LocalPlugin):
         """
         tweets = api.user_timeline(
             screen_name=username,
-            exclude_replies=True
+            exclude_replies=False
         )
         tweets.reverse()
         _logger.info(f'Found {len(tweets)} tweets')
