@@ -40,28 +40,42 @@ class Plugin(plugin_api.LocalPlugin):
         super().on_reload()
         self.tweet_scraper_task.cancel()
 
+    def _get_tweets(self, api, username):
+        """Get tweets for username
+
+        :param tweepy.API api: twitter api
+        :param str username: twitter username
+
+        :returns: list of status
+        :rtype: list
+        """
+        tweets = api.user_timeline(
+            screen_name=username,
+            exclude_replies=True
+        )
+        tweets.reverse()
+        _logger.info(f'Found {len(tweets)} tweets')
+        return tweets
+
     async def _read_tweets(self):
         """Reads fishtank tweets from @fishtankdotlive account"""
         while self.enabled:
             auth = tweepy.OAuthHandler(self.api_key, self.api_key_secret)
             auth.set_access_token(self.access_token, self.access_token_secret)
-            api = tweepy.API(auth)
+            api = tweepy.API(auth, wait_on_rate_limit=True)
             _logger.info('fetching tweets from fishtankdotlive')
-            tweets = api.user_timeline(
-                screen_name='fishtankdotlive',
-                exclude_replies=True
-            )
-            tweets.reverse()
-            _logger.info(f'Found {len(tweets)} tweets')
-            for tweet in tweets:
-                if tweet.created_at > self.last_scraped:
-                    _logger.info(
-                        f'found tweet newer then '
-                        f'{self.last_scraped.isoformat()}'
-                    )
-                    await self.client.message(
-                        '#fishtanklive',
-                        f'🐠 {tweet.text}'
-                    )
+            usernames = ['fishtankdotlive', 'DoctorCumFart']
+            for username in usernames:
+                tweets = self._get_tweets(api, username)
+                for tweet in tweets:
+                    if tweet.created_at > self.last_scraped:
+                        _logger.info(
+                            f'found tweet newer then '
+                            f'{self.last_scraped.isoformat()}'
+                        )
+                        await self.client.message(
+                            '#fishtanklive',
+                            f'🐠 {tweet.text}'
+                        )
             self.last_scraped = pendulum.now(tz='UTC')
-            await asyncio.sleep(300)
+            await asyncio.sleep(390)
