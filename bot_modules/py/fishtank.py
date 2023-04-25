@@ -52,11 +52,12 @@ class Plugin(plugin_api.LocalPlugin):
         """
         tweets = api.user_timeline(
             screen_name=username,
+            count=50,
             exclude_replies=False,
             tweet_mode='extended'
         )
         tweets.reverse()
-        _logger.info(f'Found {len(tweets)} tweets')
+        _logger.info(f'Found {len(tweets)} tweets for {username}')
         return tweets
 
     async def _read_tweets(self):
@@ -83,5 +84,5 @@ class Plugin(plugin_api.LocalPlugin):
                             '#fishtanklive',
                             f'{colors.colorize(text="🐠 @"+ username, fg=colors.WHITE, bg=colors.BLUE_TWITTER)} {text}'
                         )
-                await asyncio.sleep(190)
+                await asyncio.sleep(320)
             self.last_scraped = pendulum.now(tz='UTC')
