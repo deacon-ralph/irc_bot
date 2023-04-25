@@ -69,11 +69,12 @@ class Plugin(plugin_api.LocalPlugin):
             exclude_replies=False,
             tweet_mode='extended'
         )
-        tweets.reverse()
-        username_query.since_id = tweets[-1].id
         _logger.info(
             f'Found {len(tweets)} tweets for {username_query.username}'
         )
+        tweets.reverse()
+        if len(tweets) > 0:
+            username_query.since_id = tweets[-1].id
         return tweets
 
     async def _read_tweets(self):
@@ -84,7 +85,7 @@ class Plugin(plugin_api.LocalPlugin):
             api = tweepy.API(auth)
             username_queries = [self.last_ftdl_id, self.last_cfd_id]
             for username_query in username_queries:
-                _logger.info(f'fetching tweets from {username_query.username}')
+                _logger.info(f'Fetching tweets from {username_query.username}')
                 tweets = self._get_tweets(api, username_query)
                 for tweet in tweets:
                     username = username_query.username
