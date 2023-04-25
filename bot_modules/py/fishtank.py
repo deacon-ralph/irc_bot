@@ -4,6 +4,7 @@ import pendulum
 import tweepy
 
 import common
+import colors
 import logger
 import plugin_api
 
@@ -75,7 +76,7 @@ class Plugin(plugin_api.LocalPlugin):
                         )
                         await self.client.message(
                             '#fishtanklive',
-                            f'🐠 {tweet.text}'
+                            f'{colors.colorize(text="🐠 @"+ username, fg=colors.WHITE, bg=colors.BLUE)} {tweet.text}'
                         )
             self.last_scraped = pendulum.now(tz='UTC')
             await asyncio.sleep(390)
