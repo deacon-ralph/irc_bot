@@ -66,9 +66,9 @@ class Plugin(plugin_api.LocalPlugin):
             auth = tweepy.OAuthHandler(self.api_key, self.api_key_secret)
             auth.set_access_token(self.access_token, self.access_token_secret)
             api = tweepy.API(auth, wait_on_rate_limit=True)
-            _logger.info('fetching tweets from fishtankdotlive')
             usernames = ['fishtankdotlive', 'DoctorCumFart']
             for username in usernames:
+                _logger.info(f'fetching tweets from {username}')
                 tweets = self._get_tweets(api, username)
                 for tweet in tweets:
                     if tweet.created_at > self.last_scraped:
