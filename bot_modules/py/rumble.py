@@ -52,7 +52,7 @@ class Plugin(plugin_api.LocalPlugin):
             except AttributeError:
                 pass
             except Exception:
-                _logger.exception('Failed to parse spotify link', exc_info=True)
+                _logger.exception('Failed to parse rumble link', exc_info=True)
 
     def help_msg(self):
         return 'displays rumble video title + author'

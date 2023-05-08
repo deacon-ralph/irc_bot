@@ -38,7 +38,7 @@ class Plugin(plugin_api.LocalPlugin):
 
     def help_msg(self):
         return {
-            'tweets': 'outputs fishtankdotlive tweets to irc'
+            'outputs tweets from twitter about fishtank'
         }
 
     def on_loaded(self, client):
