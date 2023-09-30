@@ -42,7 +42,7 @@ class Plugin(plugin_api.LocalPlugin):
                     message
                 ).group("url")
                 title, author = await self._parse_rumble(url)
-                title_author = ' ' + title + ' | ' + author + ' '  # add padding
+                title_author = ' ' + title + ' | ' + author.strip() + ' '  # add padding
                 rumble_logo = colors.colorize(' ▶ ', fg=colors.BLACK, bg=colors.LIME)
                 msg = colors.colorize(title_author, fg=colors.BLACK, bg=colors.SILVER)
                 await self.client.message(
