@@ -4,6 +4,17 @@ realname = "botrealname"
 fallback_nicknames = [ "mybot1", "mybot2" ]
 discord_token = "<your bot applications secret token>"
 
+
+[twitter]
+bearer_token = ""
+api_key = ""
+api_key_secret = ""
+access_token = ""
+access_token_secret = ""
+client_id = ""
+client_secret = ""
+
+
 [[servers]]
 [servers.nooscope]
 auto_connect = true
