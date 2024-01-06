@@ -24,7 +24,8 @@ class Plugin(plugin_api.LocalPlugin):
         :returns: title, author
         :rtype: tuple
         """
-        html = requests.get(link).text
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0'}
+        html = requests.get(link, headers=headers).text
 
         soup = bs4.BeautifulSoup(html, features='lxml')
         title = soup.find('title').string
