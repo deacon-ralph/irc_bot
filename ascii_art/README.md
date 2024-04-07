@@ -1,3 +1,3 @@
 # ASCII ART
 
-[https://asciibird.birdnestlive/](https://asciibird.birdnest.live/)
+[https://asciibird.birdnest.live/](https://asciibird.birdnest.live/)
