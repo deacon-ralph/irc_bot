@@ -34,7 +34,7 @@ class Plugin(plugin_api.LocalPlugin):
         await self.client.set_mode(target, '+m')
         await self.client.message(
             target,
-            '🚨 SETTING DEFCON LEVEL 1: Something smells rotten 🚨'
+            '🚨 SETTING DEFCON LEVEL 4: Something smells rotten 🚨'
         )
         await self.client.message(
             target,
@@ -49,7 +49,7 @@ class Plugin(plugin_api.LocalPlugin):
         await self.client.set_mode(target, '+mi')
         await self.client.message(
             target,
-            '🚨 SETTING DEFCON LEVEL 2: Shits going south 🚨'
+            '🚨 SETTING DEFCON LEVEL 3: Shits going south 🚨'
         )
         await self.client.message(
             target,
@@ -66,7 +66,7 @@ class Plugin(plugin_api.LocalPlugin):
         await self.client.set_mode(target, mode, *users)
         await self.client.message(
             target,
-            '🚨 SETTING DEFCON LEVEL 3: Prepare for battle 🚨'
+            '🚨 SETTING DEFCON LEVEL 2: Prepare for battle 🚨'
         )
         await self.client.message(
             target,
@@ -90,7 +90,7 @@ class Plugin(plugin_api.LocalPlugin):
         users_without_modes = users - set(users_with_modes)
         await self.client.message(
             target,
-            '🚨 SETTING DEFCON LEVEL 4: THIS IS NOT A TEST 🚨'
+            '🚨 SETTING DEFCON LEVEL 1: THIS IS NOT A TEST 🚨'
         )
         for user in users_without_modes:
             await self.client.kick(
